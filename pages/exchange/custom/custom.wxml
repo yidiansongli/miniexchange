@@ -1,0 +1,26 @@
+<view>
+    <view class="topimg">
+        <image  src="{{collocate.cy_exchange_pic}}"></image>
+    </view>
+    <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true">
+        <view class="section">
+            <input name="cardNo" type="text" value='{{qrinfo.no}}' placeholder="请输卡号"/>
+        </view>
+        <view class="section">
+            <input name="Pwd" type="text" password="true" placeholder="请输密码" />
+        </view>
+        <view class="btn-area">
+            <button formType="submit" class='btn-submit'>确认提交</button>
+        </view>
+    </form>
+</view>
+
+<view class="userdeal" wx:if="{{collocate.cy_show_protocol == 1}}" bindtap="viewAgreement">登录表示同意 <text>《用户协议》</text> </view>
+
+
+<view class="companyName" wx:if="{{collocate.show_company}}" >
+    <view  class="cominfo" wx:if="{{companyName}}">本券由{{companyName}}发行</view>
+    <view class="server_tel1"  hidden="{{!collocate.cy_exchage_tel}}">客服电话</view>
+    <view class="server_tel2"  hidden="{{!collocate.cy_exchage_tel}}">{{collocate.cy_exchage_tel}}</view>
+</view>
+

@@ -1,0 +1,80 @@
+/* pages/gifts/pages/exchange/exchange.wxss */
+page{ background-color: #f8f7f6; height: 100%;}
+
+.noviceguidemain{
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    position:relative;
+}
+.topwords{
+    padding: 20rpx 0 60rpx;
+    font-size: 40rpx;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+}
+.noviceguidemain_img{
+    display: flex;
+    justify-content: center;
+}
+.noviceguidemain_img image{
+    width: 650rpx;
+    height: 650rpx;
+}
+.topwords1{
+    font-size: 32rpx;
+    padding: 40rpx 0;
+    display: flex;
+    justify-content: center;
+}
+.onnoviceguidemain{
+    border:none;
+    /* margin-bottom: 200rpx; */
+    width:50%;
+    font-size: 30rpx;
+    color: #fff;
+    background:#e33d3d;
+    margin-top:20rpx;
+    padding:0rpx 5%;
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+}
+.bottom_position{position: absolute;top:643rpx;left: 0;width: 100%;}
+
+
+
+.selTitle{display: flex;flex-direction: row;justify-content:space-between; margin: 20rpx 2%; font-size: 16px;padding: 10rpx;}
+.imgBox{ text-align: center;margin: 20rpx 2%;background-color: #fff; padding: 20rpx 0;}
+.imgBox_image{width: 150px; height: 150px;}
+.proTitle{ text-align: center; font-size: 14px;}
+.section{margin: 20rpx 2%;background-color: #fff; padding: 20rpx;font-size: 14px;}
+.btn-area{margin: 30rpx 2%;}
+.btn-area button{ margin-bottom: 10rpx;}
+.btn-submit{background-color: #e33d3d; color: #fff;line-height:80rpx;border-radius: 200rpx;}
+.tishi-area{margin: 20rpx 2%; color: #f00; font-size: 14px; text-align: center;}
+
+
+.topimg{width:100%;}
+.topimg image{width:100%;height:378rpx;}
+
+
+
+
+
+.userdeal{
+    display: flex;justify-content: center;align-items: center;
+    font-size: 28rpx;margin-top: 60rpx;}
+.userdeal text{color: #5dd2da;}
+
+.companyName{
+    position: fixed;bottom:50rpx;left: 0;
+    font-size: 28rpx;width: 750rpx;color:#999999;
+    display:flex;align-item:center; flex-direction: column;
+}
+.cominfo{text-align: center;}
+.server_tel1{color:#5dd2da; text-align: center;}
+.server_tel2{text-align: center;}
