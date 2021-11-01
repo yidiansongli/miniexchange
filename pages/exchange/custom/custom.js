@@ -1,4 +1,4 @@
-const app = getApp();
+import DianliService from "../../../lib/service"
 Page({
 
 	/**
@@ -21,19 +21,17 @@ Page({
 	 * 生命周期函数--监听页面加载
 	 */
 	onLoad: function (options) {
-		app.func.onPageLoad(this, options);
-		// app.func.authpage(this.route, this.options, () => {
-			if (options.q) {
-				this.checkQr(options.q);
-			} else 	{
-				this.setData({
-					qrinfo:{
-						no:"",
-						userid:options.cusid
-					}
-				});
-			}
-		// });
+		this.service = new DianliService();
+		if (options.q) {
+			this.checkQr(options.q);
+		} else 	{
+			this.setData({
+				qrinfo:{
+					no:"",
+					userid:options.cusid
+				}
+			});
+		}
 	},
 
 	onShow:function(){
@@ -44,14 +42,13 @@ Page({
 	},
 
 	getpageSet: function (no, userid) {
-		app.func.postPromise('/dl/qr?access_token={{access_token}}', {
+		service.postPromise('/dl/qr', {
 			uID: wx.getStorageSync('uid'),
 			token: wx.getStorageSync('token'),
 			cardNo: no,
 			cusid: userid
 		}).then(([code, res]) => {
 			res.data.type != 2 ? this.checkErrorCode(res, no) : '';
-
 		})
 	},
 	checkErrorCode:function(res, no){
@@ -66,7 +63,7 @@ Page({
 	},
 	dlexchange(no){
 		let cusid = this.data.qrinfo.userid;
-		app.func.getPromise(`/dlexchange/customizelayout/${no}?access_token={{access_token}}&cusid=${cusid}`)
+		service.getPromise(`/dlexchange/customizelayout/${no}?cusid=${cusid}`)
 			.then(([code, res]) => {
 				if (code == 200) {
 					this.setData({
@@ -142,7 +139,7 @@ Page({
 		this.validate(e.detail.value) ? this.checkcard2(e.detail.value,) : '';
 	},
 	checkcard2:function(data){
-		app.func.postPromise('/dl/checkcard2?access_token={{access_token}}',{
+		this.service.postPromise('/dl/checkcard2',{
 			cardNo: data.cardNo,
 			Pwd: data.Pwd,
 			type: 1,
@@ -153,7 +150,7 @@ Page({
 	},
 
 	checkcardQr:function(no, userid, pwd){
-		app.func.postPromise('/dl/checkcard2?access_token={{access_token}}',{
+		this.service.postPromise('/dl/checkcard2',{
 			cardNo: no,
 			Pwd: pwd,
 			type: 1,
