@@ -121,8 +121,8 @@ Page({
 		}
 	},
 
-	toast:function(value){
-		app.func.toastPromise(value)
+	toast:function(value, icon = 'none'){
+		this.service.toastPromise(value, icon);
 	},
 	validate:function(data){
 		if (data.cardNo === '') {
