@@ -139,7 +139,7 @@ Page({
 		this.validate(e.detail.value) ? this.checkcard2(e.detail.value,) : '';
 	},
 	checkcard2:function(data){
-		this.service.postPromise('/dl/checkcard2',{
+		this.service.postPromise('/partner/card/check',{
 			cardNo: data.cardNo,
 			Pwd: data.Pwd,
 			type: 1,
@@ -150,7 +150,7 @@ Page({
 	},
 
 	checkcardQr:function(no, userid, pwd){
-		this.service.postPromise('/dl/checkcard2',{
+		this.service.postPromise('/partner/card/check',{
 			cardNo: no,
 			Pwd: pwd,
 			type: 1,
