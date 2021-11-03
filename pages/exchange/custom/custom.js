@@ -16,6 +16,8 @@ Page({
             cy_exchage_tel: '',            // 兑换热线
         },
         qrinfo: {},
+        cardid: 0,//卡id
+        cardtypeid: 0 //卡类型id
     },
 
     /**
@@ -81,12 +83,16 @@ Page({
         } else if (res.data.errorCode == 200) {
             this.setData({companyName: res.data.company});
         }
-        this.dlexchange(no);
+        this.setData({
+            cardid: res.data.cardid
+        }, () => {
+            this.dlexchange();
+        });
     },
 
-    dlexchange(no) {
-        let cusid = this.data.qrinfo.userid;
-        this.service.getPromise(`/partner/card/layout?cardNo=${no}&cusid=${cusid}`)
+    dlexchange() {
+        let cardid = this.data.cardid;
+        this.service.getPromise(`/partner/card/layout?cardid=${cardid}`)
             .then(([code, res]) => {
                 if (code == 200) {
                     this.setData({
@@ -168,11 +174,10 @@ Page({
                     url: `/pages/about/exchange-unify/multiple?id=${cardNo}&company=${res.data.company}&cusid=${this.data.qrinfo.userid}&flextype=${flextype}`
                 })
             } else {
-                let flextype = this.data.collocate.cy_exchange_theme || 1;
                 let digest = res.data.digest || "";
                 let cardid = res.data.cardid;
                 wx.navigateTo({
-                    url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&company=${res.data.company}&cusid=${cusid}&flextype=${flextype}&digest=${digest}`
+                    url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&digest=${digest}`
                 });
             }
         } else {

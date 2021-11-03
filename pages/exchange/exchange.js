@@ -1,6 +1,7 @@
 Page({
     data: {},
     onLoad: function (options) {
+        wx.hideHomeButton();
         if (options.q) {
             this.checkQr(options.q);
         }
