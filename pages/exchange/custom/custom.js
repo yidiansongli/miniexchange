@@ -89,8 +89,6 @@ Page({
             wx.redirectTo({
                 url: '/pages/cards/order/detail?presentid=' + res.data.data.present_id,
             })
-        } else if (res.data.errorCode == 200) {
-            this.setData({companyName: res.data.company});
         }
         this.setData({
             cardid: res.data.cardid

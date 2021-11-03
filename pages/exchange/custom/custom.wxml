@@ -19,7 +19,7 @@
 
 
 <view class="companyName" wx:if="{{collocate.show_company}}" >
-    <view  class="cominfo" wx:if="{{companyName}}">本券由{{companyName}}发行</view>
+    <view  class="cominfo" wx:if="{{collocate.company_name}}">本券由{{collocate.company_name}}发行</view>
     <view class="server_tel1"  hidden="{{!collocate.cy_exchage_tel}}">客服电话</view>
     <view class="server_tel2"  hidden="{{!collocate.cy_exchage_tel}}">{{collocate.cy_exchage_tel}}</view>
 </view>
