@@ -25,13 +25,21 @@ Page({
      */
     onLoad: function (options) {
         this.service = new DianliService();
-        this.checkService(options.cusid)
-            .finally(() => {
-                this.loadParameters(options);
+        if(options.cardtypeid) {
+            this.setData({
+                cardid: options.cardtypeid
+            }, () => {
+                this.loadLayout();
             })
-            .catch(e => {
-                console.log(e);
-            });
+        } else {
+            this.checkService(options.cusid)
+                .finally(() => {
+                    this.loadParameters(options);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        }
     },
 
     loadParameters: function (options) {
@@ -41,7 +49,8 @@ Page({
         let pwd = options.pwd;
         let qr = {
             userid: cusid,
-            no: cardNo
+            no: cardNo,
+            cardtypeid: 0,
         }
         this.setData({
             qrinfo: qr
@@ -86,14 +95,19 @@ Page({
         this.setData({
             cardid: res.data.cardid
         }, () => {
-            this.dlexchange();
+            this.loadLayout();
         });
     },
 
-    dlexchange() {
-        let cardid = this.data.cardid;
-        this.service.getPromise(`/partner/card/layout?cardid=${cardid}`)
-            .then(([code, res]) => {
+    loadLayout() {
+        if(this.data.cardtypeid) {
+            let cardtypeid = this.data.cardtypeid;
+            var promise = this.service.getPromise(`/partner/card/layout?cardtypeid=${cardtypeid}`)
+        } else {
+            let cardid = this.data.cardid;
+            promise = this.service.getPromise(`/partner/card/layout?cardid=${cardid}`);
+        }
+        promise.then(([code, res]) => {
                 if (code == 200) {
                     this.setData({
                         collocate: res.data
@@ -102,7 +116,7 @@ Page({
                         wx.setNavigationBarTitle({title: res.data.cy_exchange_title});
                     }
                 }
-            })
+            });
     },
 
     toast: function (value, icon = 'none') {
