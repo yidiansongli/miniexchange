@@ -5,9 +5,7 @@ Page({
         cardid: 0,
         digest: '',
         showImg: '',
-        currentTab: 0,
         prolist: [],
-        send_user: '',
         sale: 1,
         companyName: '',
         flextype: 1,
@@ -83,10 +81,10 @@ Page({
     //填写收货地址完成兑换
     bindGiveTap: function (e) {
         let goodsId = e.currentTarget.dataset.id;
-        let cardNo = this.data.ID;
-        let cusid = this.data.cusid || 0;
+        let cardid = this.data.cardid;
+        let digest = this.data.digest;
         wx.navigateTo({
-            url: `/miniexchange/pages/exchange/order/single?proid=${goodsId}&cardNo=${cardNo}&cusid=${cusid}`
+            url: `/miniexchange/pages/exchange/order/single?proid=${goodsId}&cardid=${cardid}&digest=${digest}`
         })
     },
 

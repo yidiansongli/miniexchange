@@ -27,8 +27,7 @@
             <view class="section_li_title">{{item.goodsName}}</view>
             <view class="section_li_text">配送范围：{{item.range}}</view>
             <button wx:if="{{item.goodsNumber==1}}" class="section_li_btn" bindtap='bindGiveTap'
-                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换
-            </button>
+                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换</button>
             <block wx:else>
                 <button class="section_li_btn2">{{item.inventory_state}}</button>
             </block>
@@ -45,8 +44,7 @@
             <view class="section_li_title2">{{item.goodsName}}</view>
             <view class="section_li_text2">配送范围：{{item.range}}</view>
             <button wx:if="{{item.goodsNumber==1}}" class="exchange-btn2" bindtap='bindGiveTap'
-                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换
-            </button>
+                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换</button>
             <block wx:else>
                 <button class="section_li_btn2">{{item.inventory_state}}</button>
             </block>
@@ -61,8 +59,7 @@
             <view class="section_li_title2">{{item.goodsName}}</view>
             <view class="section_li_text2">配送范围：{{item.range}}</view>
             <button wx:if="{{item.goodsNumber==1}}" class="section_li_btn3" bindtap='bindGiveTap'
-                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换
-            </button>
+                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换</button>
             <block wx:else>
                 <button class="section_li_btn2">{{item.inventory_state}}</button>
             </block>

@@ -55,14 +55,8 @@ Page({
         this.setData({
             qrinfo: qr
         }, () => {
-            if (pwd) {
-                this.checkcardQr(cardNo, cusid, pwd);
-            } else {
-                if (cardNo) {
-                    this.getpageSet(cardNo, cusid);
-                }
-            }
-        })
+            this.checkcardQr(cardNo, cusid, pwd);
+        });
     },
 
     onShow: function () {
@@ -178,26 +172,28 @@ Page({
 
     checkStatus: function (res, cardNo) {
         let cusid = res.data.cusid;
-        if (res.data.status == 2) {
-            if (res.data.type == 3) {
-                wx.navigateTo({
-                    url: '/pages/about/exchange-unify/package?cardid=' + res.data.cardid
-                })
-            }
-            if (res.data.type == 4) {
-                let flextype = this.data.collocate.cy_exchange_theme || 1;
-                wx.navigateTo({
-                    url: `/pages/about/exchange-unify/multiple?id=${cardNo}&company=${res.data.company}&cusid=${this.data.qrinfo.userid}&flextype=${flextype}`
-                })
+        if(res.data.digest != null || res.data.camilotype == 2) {
+            if (res.data.status == 2) {
+                if (res.data.type == 3) {
+                    wx.navigateTo({
+                        url: '/pages/about/exchange-unify/package?cardid=' + res.data.cardid
+                    })
+                }
+                if (res.data.type == 4) {
+                    let flextype = this.data.collocate.cy_exchange_theme || 1;
+                    wx.navigateTo({
+                        url: `/pages/about/exchange-unify/multiple?id=${cardNo}&company=${res.data.company}&cusid=${this.data.qrinfo.userid}&flextype=${flextype}`
+                    })
+                } else {
+                    let digest = res.data.digest || "";
+                    let cardid = res.data.cardid;
+                    wx.navigateTo({
+                        url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&digest=${digest}`
+                    });
+                }
             } else {
-                let digest = res.data.digest || "";
-                let cardid = res.data.cardid;
-                wx.navigateTo({
-                    url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&digest=${digest}`
-                });
+                this.showModal(res);
             }
-        } else {
-            this.showModal(res);
         }
     },
     showModal: function (res) {
