@@ -12,17 +12,16 @@ Page({
         flextype:1,
         show_company: 1
     },
+    /**
+     * param:cardid
+     * digest:
+     * @param options
+     */
     onLoad: function (options) {
         this.service = new DianliService();
-        if(options.flextype){
-            this.setData({
-                flextype:options.flextype
-            });
-        }
         this.service.postPromise('/partner/card/products',
             {
-                cardNo: options.id,
-                cusid: options.cusid || 0
+                cardid: options.cardid
             }
         ).then(([code, res])=> {
             if(code == 200) {
