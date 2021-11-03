@@ -7,7 +7,7 @@ Page({
      */
     data: {
         collocate: {
-            cy_exchange_pic: 'https://files.dianlinet.com/dianli/images/2019-12-06/14-44-07.jpg',     //兑换图
+            cy_exchange_pic: '',     //兑换图
             cy_exchange_title: '卡券兑换',   // 兑换标题
             cy_show_protocol: 0,           // 显示用户协议0隐藏1显示
             cy_protocol_title: '用户协议',   // 用户协议标题
@@ -24,21 +24,34 @@ Page({
     onLoad: function (options) {
         this.service = new DianliService();
         this.checkService(options.cusid)
-            .then(() => {
-                if (options.q) {
-                    this.checkQr(options.q);
-                } else {
-
-                }
-            })
             .finally(() => {
-                this.setData({
-                    qrinfo: {
-                        no: "",
-                        userid: options.cusid
-                    }
-                });
+                this.loadParameters(options);
+            })
+            .catch(e => {
+                console.log(e);
             });
+    },
+
+    loadParameters: function (options) {
+        console.log(options);
+        let cusid = options.cusid;
+        let cardNo = options.cardNo;
+        let pwd = options.pwd;
+        let qr = {
+            userid: cusid,
+            no:cardNo
+        }
+        this.setData({
+            qrinfo: qr
+        }, () => {
+            if (pwd) {
+                this.checkcardQr(cardNo, cusid, pwd);
+            } else {
+                if (cardNo) {
+                    this.getpageSet(cardNo, cusid);
+                }
+            }
+        })
     },
 
     onShow: function () {
@@ -49,28 +62,31 @@ Page({
     },
 
     getpageSet: function (no, userid) {
-        service.postPromise('/dl/qr', {
-            uID: wx.getStorageSync('uid'),
-            token: wx.getStorageSync('token'),
+        this.service.postPromise('/partner/card/check', {
             cardNo: no,
-            cusid: userid
+            type: 1,
+            cusid: userid,
         }).then(([code, res]) => {
             res.data.type != 2 ? this.checkErrorCode(res, no) : '';
+        }).catch(e => {
+            console.log(e);
         })
     },
+
     checkErrorCode: function (res, no) {
         if (res.data.errorCode == 300) {
             wx.redirectTo({
                 url: '/pages/cards/order/detail?presentid=' + res.data.data.present_id,
             })
         } else if (res.data.errorCode == 200) {
-            this.setData({companyName: res.data.data.company});
+            this.setData({companyName: res.data.company});
         }
         this.dlexchange(no);
     },
+
     dlexchange(no) {
         let cusid = this.data.qrinfo.userid;
-        service.getPromise(`/dlexchange/customizelayout/${no}?cusid=${cusid}`)
+        this.service.getPromise(`/partner/card/layout?cardNo=${no}&cusid=${cusid}`)
             .then(([code, res]) => {
                 if (code == 200) {
                     this.setData({
@@ -81,55 +97,6 @@ Page({
                     }
                 }
             })
-    },
-
-
-    //提取卡号
-    checkQr: function (qr) {
-        // let url = 'https://www.dianlinet.com/Weixin/Exchange/customer/id/LJ0000019UBE1?cusid=114';
-        let url = decodeURIComponent(qr);
-        let no = getNo();
-        let userid = getUserid();
-        let pwd = getPassword();
-        this.setData({
-            qrinfo: {
-                no: no,
-                userid: userid,
-                password: pwd,
-            }
-        }, () => {
-            if (pwd === false) {
-                this.getpageSet(no, userid);
-            } else {
-                this.checkcardQr(no, userid, pwd);
-            }
-        });
-
-        function getNo() {
-            let oitem = url.split('?')[0].split('/');
-            let result = oitem[oitem.length - 1].trim().replace(/\+/g, "");
-            return result;
-        }
-
-        function getUserid() {
-            return getQueryVariable('cusid');
-        }
-
-        function getPassword() {
-            return getQueryVariable('pwd');
-        }
-
-        function getQueryVariable(variable) {
-            var query = url.split('?')[1];
-            var vars = query.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                if (pair[0] == variable) {
-                    return pair[1];
-                }
-            }
-            return (false);
-        }
     },
 
     toast: function (value, icon = 'none') {
@@ -151,9 +118,16 @@ Page({
     },
 
     checkService: function (cusid) {
-        this.service.postPromise('/partner/service/check', {cusid: cusid})
+        return this.service.postPromise('/partner/service/check', {cusid: cusid})
             .then(([code, res]) => {
-                code === 200 ? this.checkStatus(res, data.cardNo) : this.toast(res.message);
+                console.log(res);
+                if (code == 200) {
+                    this.setData({
+                        ["collocate.cy_exchange_pic"]: res.data.cy_exchange_pic
+                    })
+                }
+            }).catch(e => {
+                console.log(e);
             })
     },
 
@@ -181,7 +155,7 @@ Page({
     },
 
     checkStatus: function (res, cardNo) {
-        console.log(res)
+        let cusid = res.data.cusid;
         if (res.data.status == 2) {
             if (res.data.type == 3) {
                 wx.navigateTo({
@@ -196,7 +170,7 @@ Page({
             } else {
                 let flextype = this.data.collocate.cy_exchange_theme || 1;
                 wx.navigateTo({
-                    url: `/pages/about/exchange/details/details?id=${cardNo}&company=${res.data.company}&cusid=${this.data.qrinfo.userid}&flextype=${flextype}`
+                    url: `/miniexchange/pages/exchange/products/single?id=${cardNo}&company=${res.data.company}&cusid=${cusid}&flextype=${flextype}`
                 });
             }
         } else {

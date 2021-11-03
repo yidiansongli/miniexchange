@@ -1,0 +1,97 @@
+<!--pages/gifts/pages/details/single.wxml-->
+<view class="main">
+    <view class="scene" wx:if="{{showImg}}">
+        <image mode="widthFix" src="{{showImg}}" class="scene_image"></image>
+    </view>
+    <view class="scene" wx:else>
+        <image mode="widthFix" src="https://files.dianlinet.com/dianli/images/2019-12-06/15-14-23.jpg"
+               class="scene_image"></image>
+    </view>
+    <view class="section">
+        <!--    <view class="section__title1" wx:if="{{sale == 0}}">{{clientError}}</view>-->
+        <view class="section__title" wx:if="{{sale == 1}}">
+            <view class="section1">礼品兑换</view>
+            <view class="section2">以下礼品可
+                <text>任选1件</text>
+                兑换哦
+            </view>
+        </view>
+    </view>
+
+    <view class='section_box'  wx:if="{{flextype == 1}}">
+        <view class='section_li' wx:for="{{prolist}}" wx:key="key">
+            <view>
+                <image src="{{item.cy_pic}}" data-id='{{item.goodsId}}' bindtap="bindViewTap"
+                       class="section_li_image"></image>
+            </view>
+            <view class="section_li_title">{{item.goodsName}}</view>
+            <view class="section_li_text">配送范围：{{item.range}}</view>
+            <button wx:if="{{item.goodsNumber==1}}" class="section_li_btn" bindtap='bindGiveTap'
+                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换
+            </button>
+            <block wx:else>
+                <button class="section_li_btn2">{{item.inventory_state}}</button>
+            </block>
+        </view>
+    </view>
+    <view style="clear:both;"></view>
+
+
+
+    <view class='section_box2'  wx:if="{{flextype == 2}}">
+        <view class='section_li2' wx:for="{{prolist}}" wx:key="key">
+            <image src="{{item.cy_pic}}" data-id='{{item.goodsId}}' bindtap="bindViewTap"
+                   class="section_li_image2"></image>
+            <view class="section_li_title2">{{item.goodsName}}</view>
+            <view class="section_li_text2">配送范围：{{item.range}}</view>
+            <button wx:if="{{item.goodsNumber==1}}" class="exchange-btn2" bindtap='bindGiveTap'
+                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换
+            </button>
+            <block wx:else>
+                <button class="section_li_btn2">{{item.inventory_state}}</button>
+            </block>
+        </view>
+    </view>
+
+
+    <view class='section_box3'  wx:if="{{flextype == 3}}">
+        <view class='section_li3' wx:for="{{prolist}}" wx:key="key">
+                <image src="{{item.cy_pic}}" data-id='{{item.goodsId}}' bindtap="bindViewTap"
+                       class="section_li_image2"></image>
+            <view class="section_li_title2">{{item.goodsName}}</view>
+            <view class="section_li_text2">配送范围：{{item.range}}</view>
+            <button wx:if="{{item.goodsNumber==1}}" class="section_li_btn3" bindtap='bindGiveTap'
+                    data-id='{{item.goodsId}}' data-index="{{index}}">立即兑换
+            </button>
+            <block wx:else>
+                <button class="section_li_btn2">{{item.inventory_state}}</button>
+            </block>
+        </view>
+    </view>
+
+
+    <view class="bottom_taps" wx:if="{{prolist.length > 0}}">已显示全部</view>
+
+
+
+
+
+    <view class="companyName" wx:if="{{companyName && show_company}}">本券由{{companyName}}发行</view>
+
+    <view class="showtips" wx:if="{{tipExpired == 0}}">
+        <view class="showtips1">
+            <view class="showtips1_title">卡券过期提示</view>
+            <view class="showtips1_content">{{clientError}}</view>
+
+            <button class="showtips1_btn" bindtap="open_tel" >拨打电话</button>
+<!--            <button class="showtips1_btn" bindtap="copy_tel">复制电话</button>-->
+
+
+        </view>
+        <view bindtap="hideModal" class="rewards_cancel">
+            <image src="/image/cancelgift.png"></image>
+        </view>
+    </view>
+    <view class="common_screen_gray" wx:if="{{tipExpired == 0}}"></view>
+
+</view>
