@@ -200,9 +200,9 @@ Page({
 
 
     viewAgreement: function () {
-        let cusid = this.data.qrinfo.userid;
+        let cardid = this.data.cardid;
         wx.navigateTo({
-            url: `/pages/cards/agreement/agreement?cardNo=${this.data.qrinfo.no}&defineno=1&cusid=${cusid}`
+            url: `/miniexchange/pages/exchange/agreement/agreement?cardid=${cardid}`
         })
     },
 

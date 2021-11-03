@@ -1,0 +1,2 @@
+
+<view style="padding:20rpx;"><text class="title">{{content}}</text></view>
