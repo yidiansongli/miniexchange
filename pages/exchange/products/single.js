@@ -88,26 +88,4 @@ Page({
         })
     },
 
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function () {
-        wx.getSetting({
-            success(res) {
-                if (res.authSetting['scope.userInfo']) {
-                    wx.getUserInfo({
-                        success(res) {
-                            console.log(res.userInfo);
-                            app.func.ongetuserinfo(res.userInfo);
-                            // requestData.ongetuserinfo(res.userInfo);
-                            // _succ != null && _succ(res.userInfo);
-                        },
-                        fail(res) {
-                        }
-                    })
-                }
-            }
-        })
-    },
-
 })
