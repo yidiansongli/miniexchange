@@ -77,6 +77,7 @@ Page({
             cardNo: no,
             type: 1,
             cusid: userid,
+            cardtypeid: this.data.cardtypeid
         }).then(([code, res]) => {
             res.data.type != 2 ? this.checkErrorCode(res, no) : '';
         }).catch(e => {
@@ -154,7 +155,8 @@ Page({
             cardNo: data.cardNo,
             Pwd: data.Pwd,
             type: 1,
-            cusid: this.data.qrinfo.userid
+            cusid: this.data.qrinfo.userid,
+            cardtypeid: this.data.cardtypeid
         }).then(([code, res]) => {
             code === 200 ? this.checkStatus(res, data.cardNo) : this.toast(res.message);
         })
