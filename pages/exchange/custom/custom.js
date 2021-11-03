@@ -170,8 +170,9 @@ Page({
             } else {
                 let flextype = this.data.collocate.cy_exchange_theme || 1;
                 let digest = res.data.digest || "";
+                let cardid = res.data.cardid;
                 wx.navigateTo({
-                    url: `/miniexchange/pages/exchange/choice/single?id=${cardNo}&company=${res.data.company}&cusid=${cusid}&flextype=${flextype}&digest=${digest}`
+                    url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&company=${res.data.company}&cusid=${cusid}&flextype=${flextype}&digest=${digest}`
                 });
             }
         } else {
