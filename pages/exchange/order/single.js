@@ -1,5 +1,4 @@
-// pages/gifts/pages/order/order.js
-const app = getApp();
+import DianliService from "../../../lib/service"
 
 Page({
 
