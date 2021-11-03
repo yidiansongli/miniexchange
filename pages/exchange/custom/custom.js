@@ -39,7 +39,7 @@ Page({
         let pwd = options.pwd;
         let qr = {
             userid: cusid,
-            no:cardNo
+            no: cardNo
         }
         this.setData({
             qrinfo: qr
@@ -169,8 +169,9 @@ Page({
                 })
             } else {
                 let flextype = this.data.collocate.cy_exchange_theme || 1;
+                let digest = res.data.digest || "";
                 wx.navigateTo({
-                    url: `/miniexchange/pages/exchange/choice/single?id=${cardNo}&company=${res.data.company}&cusid=${cusid}&flextype=${flextype}`
+                    url: `/miniexchange/pages/exchange/choice/single?id=${cardNo}&company=${res.data.company}&cusid=${cusid}&flextype=${flextype}&digest=${digest}`
                 });
             }
         } else {
