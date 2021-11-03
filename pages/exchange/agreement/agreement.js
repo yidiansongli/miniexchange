@@ -15,11 +15,11 @@ Page({
      */
     onLoad: function (options) {
         this.service = new DianliService();
-        this.cardinfo(options.cardid);
+        this.cardinfo(options.cardtypeid);
     },
 
-    cardinfo:function(cardid){
-        this.service.getPromise(`/partner/card/layout?cardid=${cardid}`)
+    cardinfo:function(cardtypeid){
+        this.service.getPromise(`/partner/card/layout?cardtypeid=${cardtypeid}`)
             .then(([code,res])=>{
                 this.setData({
                     content:res.data.cy_protocol

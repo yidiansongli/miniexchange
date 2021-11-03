@@ -27,7 +27,7 @@ Page({
         this.service = new DianliService();
         if(options.cardtypeid) {
             this.setData({
-                cardid: options.cardtypeid
+                cardtypeid: options.cardtypeid
             }, () => {
                 this.loadLayout();
             })
@@ -208,9 +208,9 @@ Page({
 
 
     viewAgreement: function () {
-        let cardid = this.data.cardid;
+        let cardtypeid = this.data.collocate.cardtypeid;
         wx.navigateTo({
-            url: `/miniexchange/pages/exchange/agreement/agreement?cardid=${cardid}`
+            url: `/miniexchange/pages/exchange/agreement/agreement?cardtypeid=${cardtypeid}`
         })
     }
 });
