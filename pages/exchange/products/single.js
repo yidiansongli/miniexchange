@@ -1,12 +1,9 @@
-// pages/gifts/pages/details/single.js
-//获取应用实例
-const app = getApp();
+import DianliService from "../../../lib/service"
 
 Page({
     data: {
         ID: 0,
         showImg: '',
-        imgUrl: '',
         currentTab: 0,
         prolist: [],
         send_user: '',
@@ -16,46 +13,43 @@ Page({
         show_company: 1
     },
     onLoad: function (options) {
+        this.service = new DianliService();
         if(options.flextype){
             this.setData({
                 flextype:options.flextype
             });
         }
-        app.func.onPageLoad(this, options);
-        app.func.postapi('/weixin/Gifts/getgifts?access_token={{access_token}}',
+        this.service.postPromise('/partner/card/products',
             {
-                uID: wx.getStorageSync('uid'),
-                token: wx.getStorageSync('token'),
-                ID: options.id,
-                cusid: options.cusid || 0,
-            },
-            (code, res, that) => {
-                if (res.success) {
-                    if (res.sale == 0) {
-                        that.setData({
-                            clientError: res.clientError,
-                            sale: res.sale,
-                            tipExpired: 0,
-                            tel: res.tel
-                        });
-                    }
-                    that.setData({
-                        ID: options.id,
-                        showImg: res.data.cy_pic,
-                        prolist: res.data.pro_list,
-                        imgUrl: app.globalData.imgUrl,
-                        companyName:options.company,
-                        cusid:options.cusid,
-                        show_company: res.data.show_company
-                    })
-                    if(res.data.exchange_show != null && res.data.exchange_show != ""){
-                        let content = res.data.exchange_show;
-                        app.func.confirm('兑换提示',content,false);
-                    }
-                } else {
-                    app.func.toastPromise(res.message)
+                cardNo: options.id,
+                cusid: options.cusid || 0
+            }
+        ).then(([code, res])=> {
+            if(code == 200) {
+                if (res.data.sale == 0) {
+                    this.setData({
+                        clientError: res.clientError,
+                        sale: res.sale,
+                        tipExpired: 0,
+                        tel: res.tel
+                    });
                 }
-            }, (res, that) => {}, this);
+                this.setData({
+                    ID: options.id,
+                    showImg: res.data.cy_pic,
+                    prolist: res.data.pro_list,
+                    companyName:options.company,
+                    cusid:options.cusid,
+                    show_company: res.data.show_company
+                })
+                if(res.data.exchange_show != null && res.data.exchange_show != ""){
+                    let content = res.data.exchange_show;
+                    app.func.confirm('兑换提示',content,false);
+                }
+            } else {
+                app.func.toastPromise(res.message)
+            }
+        }).catch(e => console.log(e));
     },
 
 
