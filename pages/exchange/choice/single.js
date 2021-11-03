@@ -2,16 +2,18 @@ import DianliService from "../../../lib/service"
 
 Page({
     data: {
-        ID: 0,
+        cardid: 0,
+        digest: '',
         showImg: '',
         currentTab: 0,
         prolist: [],
         send_user: '',
         sale: 1,
         companyName: '',
-        flextype:1,
+        flextype: 1,
         show_company: 1
     },
+
     /**
      * param:cardid
      * digest:
@@ -19,12 +21,35 @@ Page({
      */
     onLoad: function (options) {
         this.service = new DianliService();
+        this.setData({
+            cardid: options.cardid,
+            digest: options.digest
+        }, () => {
+            this.loadProducts(options.cardid);
+            this.loadLayout(options.cardid);
+        });
+    },
+
+    loadLayout(cardid) {
+        this.service.getPromise(`/partner/card/layout?cardid=${cardid}`)
+            .then(([code, res]) => {
+                if (code == 200) {
+                    this.setData({
+                        companyName: res.data.company_name,
+                        show_company: res.data.show_company,
+                        flextype: res.data.cy_exchange_theme || 1
+                    });
+                }
+            });
+    },
+
+    loadProducts: function (cardid) {
         this.service.postPromise('/partner/card/products',
             {
-                cardid: options.cardid
+                cardid: cardid
             }
-        ).then(([code, res])=> {
-            if(code == 200) {
+        ).then(([code, res]) => {
+            if (code == 200) {
                 if (res.data.sale == 0) {
                     this.setData({
                         clientError: res.data.error,
@@ -34,16 +59,12 @@ Page({
                     });
                 }
                 this.setData({
-                    ID: options.id,
                     showImg: res.data.cy_pic,
                     prolist: res.data.pro_list,
-                    companyName:options.company,
-                    cusid:options.cusid,
-                    show_company: res.data.show_company
                 })
-                if(res.data.exchange_show != null && res.data.exchange_show != ""){
+                if (res.data.exchange_show != null && res.data.exchange_show != "") {
                     let content = res.data.exchange_show;
-                    this.service.confirm('兑换提示',content,false);
+                    this.service.confirm('兑换提示', content, false);
                 }
             } else {
                 this.service.toastPromise(res.message)

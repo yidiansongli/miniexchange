@@ -121,6 +121,7 @@ Page({
     toast: function (value, icon = 'none') {
         this.service.toastPromise(value, icon);
     },
+
     validate: function (data) {
         if (data.cardNo === '') {
             this.toast('卡号不能为空！');
@@ -132,6 +133,7 @@ Page({
         }
         return true;
     },
+
     formSubmit: function (e) {
         this.validate(e.detail.value) ? this.checkcard2(e.detail.value,) : '';
     },
