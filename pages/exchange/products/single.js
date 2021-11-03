@@ -28,10 +28,10 @@ Page({
             if(code == 200) {
                 if (res.data.sale == 0) {
                     this.setData({
-                        clientError: res.clientError,
-                        sale: res.sale,
+                        clientError: res.data.error,
+                        sale: res.data.sale,
                         tipExpired: 0,
-                        tel: res.tel
+                        tel: res.data.tel
                     });
                 }
                 this.setData({
@@ -44,10 +44,10 @@ Page({
                 })
                 if(res.data.exchange_show != null && res.data.exchange_show != ""){
                     let content = res.data.exchange_show;
-                    app.func.confirm('兑换提示',content,false);
+                    this.service.confirm('兑换提示',content,false);
                 }
             } else {
-                app.func.toastPromise(res.message)
+                this.service.toastPromise(res.message)
             }
         }).catch(e => console.log(e));
     },
