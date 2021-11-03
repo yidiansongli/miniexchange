@@ -188,13 +188,7 @@ Page({
         wx.showModal({
             title: '提示',
             content: res.message,
-            showCancel: false,
-            success: function (res) {
-                if (res.confirm) {
-                    wx.setStorageSync("tab", "1");
-                    wx.switchTab({url: '/pages/gifts/gifts'})
-                }
-            }
+            showCancel: false
         })
     },
 
