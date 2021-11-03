@@ -57,7 +57,7 @@ Page({
     bindViewTap: function (e) {
         var ID = e.currentTarget.dataset.id;
         wx.navigateTo({
-            url: '/pages/about/exchange/product/product?id=' + ID
+            url: '/miniexchange/pages/product/product?id=' + ID
         })
     },
     //填写收货地址完成兑换
