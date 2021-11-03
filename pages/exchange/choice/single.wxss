@@ -1,5 +1,5 @@
 /* pages/gifts/pages/details/single.wxss */
-@import "/pages/template/css/common.wxss";
+@import "../../../templates/common.wxss";
 page{background: #f4f4f4;}
 .main{width: 100%;padding-bottom: 150rpx;}
 .scene{width: 100%;}

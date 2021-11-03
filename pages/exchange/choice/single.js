@@ -63,10 +63,10 @@ Page({
     //填写收货地址完成兑换
     bindGiveTap: function (e) {
         let goodsId = e.currentTarget.dataset.id;
-        let giftsId = this.data.ID;
+        let cardNo = this.data.ID;
         let cusid = this.data.cusid || 0;
         wx.navigateTo({
-            url: `/pages/about/exchange/order/order?pid= ${goodsId}&gid=${giftsId}&cusid=${cusid}`
+            url: `/miniexchange/pages/exchange/order/single?proid=${goodsId}&cardNo=${cardNo}&cusid=${cusid}`
         })
     },
 

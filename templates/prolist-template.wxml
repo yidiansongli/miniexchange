@@ -1,0 +1,172 @@
+<wxs module="fmt" src="fmt.wxs"></wxs>
+<template name="budget">
+    <view class="brandshop_mode"
+
+          hover-class="viewactive"
+          hover-stop-propagation="true"
+          hover-start-time="0"
+          hover-stay-time="200"
+
+          bindtap="productdetail" data-index="{{items.skuid}}">
+        <view class="newindex_minuser_budget" wx:if="{{item.activityid != null}}">{{item.minusers}}人团</view>
+        <view class="brandshop_mode_img">
+            <image  src="{{items.cover}}"></image>
+        </view>
+        <view class="budget_bottom">
+            <view class="brandshop_mode_name">{{items.name}}</view>
+            <view class='brandshop_mode_num'>
+                <view class='brandshop_mode_nums'>
+                    <view class='brandshop_mode_price1'>
+                        <text wx:if="{{items.activityid != null}}">{{fmt.formatCurrency(items.gprice)}}
+                        </text>
+                        <text wx:elif="{{items.rushid != null}}">{{fmt.formatCurrency(items.rprice)}}</text>
+                        <text wx:else>{{fmt.formatCurrency(items.price)}}</text>
+                        <image wx:if="{{items.coupon_limit == 0}}" mode="widthFix"
+                               src="/image/index/showcoupontip.png"></image>
+                    </view>
+                    <view class='brandshop_mode_price2'>
+                        <text wx:if="{{items.activityid != null}}">{{fmt.formatCurrency(items.oprice)}}
+                        </text>
+                        <text wx:elif="{{items.rushid != null}}">{{fmt.formatCurrency(items.oprice)}}</text>
+                        <text wx:else>{{fmt.formatCurrency(items.oprice)}}</text>
+                    </view>
+                </view>
+                <view class='brandshop_mode_people'>
+                    <text wx:if="{{items.buyers != null && items.buyers != 0}}">已送{{items.buyers}}次</text>
+                </view>
+            </view>
+            <view class="buytype">
+                <view class="buytype1" catchtap="buy" data-type="1" data-id="{{items.skuid}}">购买</view>
+                <view class="buytype2" catchtap="buy" data-type="2" data-id="{{items.skuid}}">送礼</view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<template name="singleshop">
+    <view class="newindex_shop_detail"
+
+          hover-class="viewactive"
+          hover-stop-propagation="true"
+          hover-start-time="0"
+          hover-stay-time="200"
+
+          bindtap="productdetail" data-index="{{item.skuid}}">
+        <view class="newindex_shop_detail_bottom">
+            <view class="newindex_minusers" wx:if="{{item.activityid != null}}">{{item.minusers}}人团</view>
+            <image class="newindex_shop_img"
+                   src="{{item.cover}}"></image>
+            <view class="newindex_shop_info">
+                <view class="newindex_shop_name">{{item.name}}</view>
+                <view class="newindex_shop_range"></view>
+                <view class="showhidecoupontipinfo">
+                    <view wx:if="{{item.activityid != null}}" class="newindex_shop_price1">
+                        {{fmt.formatCurrency(item.gprice)}}
+                    </view>
+                    <view wx:elif="{{item.rushid != null}}" class="newindex_shop_price1">
+                        {{fmt.formatCurrency(item.rprice)}}
+                    </view>
+                    <view wx:else class="newindex_shop_price1">{{fmt.formatCurrency(item.price)}}</view>
+                    <image wx:if="{{item.coupon_limit == 0}}" mode="widthFix"
+                           src="/image/index/showcoupontip.png"></image>
+                </view>
+                <view class="newindex_shop_price2">{{fmt.formatCurrency(item.oprice)}}</view>
+                <view class="newindex_shop_bottom">
+                    <view class="newindex_shop_nums">
+                        <text wx:if="{{item.buyers != null && item.buyers != 0}}">已送{{item.buyers}}次</text>
+                    </view>
+                    <view class="buytypes">
+                        <view class="buytype1 addrightm" catchtap="buy" data-type="1" data-id="{{item.skuid}}">购买</view>
+                        <view class="buytype2" catchtap="buy" data-type="2" data-id="{{item.skuid}}">送礼</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+
+
+<template name="prolistLeft">
+    <view class="food"
+
+
+          hover-class="viewactive"
+          hover-stop-propagation="true"
+          hover-start-time="0"
+          hover-stay-time="200"
+
+
+          bindtap='productdetail' data-index="{{item.pid}}" data-minusers="{{item.minusers}}"
+          data-name="{{item.name}}" data-gprice="{{item.gprice}}" data-price="{{item.price}}"
+          data-keyword="{{item.keyword}}" data-page="{{item.page}}">
+        <image class="food_img" src='{{item.cover}}!l'></image>
+        <view class="minusers" wx:if="{{item.activityid != null}}">{{item.minusers}}人团</view>
+        <image class="{{item.sale==2 ? 'sale2' : 'pagehide'}}" src="https://files.dianlinet.com/dianli/images/2020-09-01/15-16-24.jpg"></image>
+        <view class="prolist_bottom">
+            <view class='proname'>{{item.name}}</view>
+            <view class='num'>
+                <view class='num1'>
+                    <view class='price'>
+                        <text wx:if="{{item.activityid != null}}">{{fmt.formatCurrency(item.gprice)}}</text>
+                        <text wx:elif="{{item.rushid != null}}">{{fmt.formatCurrency(item.rprice)}}</text>
+                        <text wx:else>{{fmt.formatCurrency(item.price)}}</text>
+                        <image wx:if="{{item.coupon_limit == 0}}" mode="widthFix"
+                               src="/image/index/showcoupontip.png"></image>
+                    </view>
+                    <view class='price1'>
+                        <text wx:if="{{item.activityid != null}}">{{fmt.formatCurrency(item.oprice)}}</text>
+                        <text wx:elif="{{item.rushid != null}}">{{fmt.formatCurrency(item.oprice)}}</text>
+                        <text wx:else>{{fmt.formatCurrency(item.oprice)}}</text>
+                    </view>
+                </view>
+                <view class='people' wx:if="{{item.buyers != null && item.buyers != 0}}">已送{{item.buyers}}次</view>
+            </view>
+            <view class="buytypes buytypesl">
+                <view class="buytype1"  catchtap="buy" data-type="1" data-id="{{item.skuid}}">购买</view>
+                <view class="buytype2"  catchtap="buy" data-type="2" data-id="{{item.skuid}}">送礼</view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<template name="prolistRight">
+    <view class="food"
+
+          hover-class="viewactive"
+          hover-stop-propagation="true"
+          hover-start-time="0"
+          hover-stay-time="200"
+
+          bindtap='productdetail' data-index="{{item.pid}}" data-minusers="{{item.minusers}}"
+          data-name="{{item.name}}" data-gprice="{{item.gprice}}" data-price="{{item.price}}"
+          data-keyword="{{item.keyword}}" data-page="{{item.page}}">
+        <image class="food_img" src='{{item.cover}}!l'></image>
+        <view class="minusers" wx:if="{{item.activityid != null}}">{{item.minusers}}人团</view>
+        <image class="{{item.sale==2 ? 'sale2' : 'pagehide'}}" src="https://files.dianlinet.com/dianli/images/2020-09-01/15-16-24.jpg"></image>
+        <view class="prolist_bottom">
+            <view class='proname'>{{item.name}}</view>
+            <view class='num'>
+                <view class='num1'>
+                    <view class='price'>
+                        <text wx:if="{{item.activityid != null}}">{{fmt.formatCurrency(item.gprice)}}</text>
+                        <text wx:elif="{{item.rushid != null}}">{{fmt.formatCurrency(item.rprice)}}</text>
+                        <text wx:else>{{fmt.formatCurrency(item.price)}}</text>
+                        <image wx:if="{{item.coupon_limit == 0}}" mode="widthFix"
+                               src="/image/index/showcoupontip.png"></image>
+                    </view>
+                    <view class='price1'>
+                        <text wx:if="{{item.activityid != null}}">{{fmt.formatCurrency(item.oprice)}}</text>
+                        <text wx:elif="{{item.rushid != null}}">{{fmt.formatCurrency(item.oprice)}}</text>
+                        <text wx:else>{{fmt.formatCurrency(item.oprice)}}</text>
+                    </view>
+                </view>
+                <view class='people' wx:if="{{item.buyers != null && item.buyers != 0}}">已送{{item.buyers}}次</view>
+            </view>
+            <view class="buytypes buytypesr">
+                <view class="buytype1" catchtap="buy" data-type="1" data-id="{{item.skuid}}">购买</view>
+                <view class="buytype2" catchtap="buy" data-type="2" data-id="{{item.skuid}}">送礼</view>
+            </view>
+        </view>
+
+    </view>
+</template>

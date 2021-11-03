@@ -19,7 +19,7 @@ Page({
         if (pwd) {
             redirect = redirect + `&pwd=${pwd}`;
         }
-        wx.navigateTo({'url': redirect});
+        wx.redirectTo({'url': redirect});
 
         function getNo() {
             let oitem = url.split('?')[0].split('/');
