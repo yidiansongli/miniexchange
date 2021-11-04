@@ -6,7 +6,8 @@ Page({
      * 页面的初始数据
      */
     data: {
-        cardId: 0,  //礼迹ID
+        cardid: 0,  //卡券ID
+        digest: '',//密钥
         productId: 0,  //兑换的产品ID
         addinfo: [],
         hasSuccess: false,
@@ -37,104 +38,72 @@ Page({
      */
     onLoad: function (options) {
         this.service = new DianliService();
-        wx.chooseAddress({
-            success: (res) => {
-                var region = [res.provinceName, res.cityName, res.countyName];
-                this.setData({addinfo: res, region: region});
-            },
-            complete: () => {
-                this.checkData(options);
-            }
+        this.setData({
+            cardid: options.cardid,
+            digest: options.digest
+        }, () => {
+            wx.chooseAddress({
+                success: (res) => {
+                    var region = [res.provinceName, res.cityName, res.countyName];
+                    this.setData({addinfo: res, region: region});
+                },
+                complete: () => {
+                    this.checkData(options);
+                }
+            })
         })
     },
+
     checkData: function (options) {
-        this.runof(options.proid, options.cusid || 0);
-        this.setData({
-            giftsId: options.cardNo,
-            cusid: options.cusid || 0,
-            runid: options.runid,
-            cardId: options.cardId,
-            pid: options.pid
-        });
+        this.loadProduct(options.proid);
     },
 
-    runof: function (idarr, cusid) {
-        let arrid = idarr.split(",");
-        let arr = [parseInt()];
-        arrid.forEach(v => {
-            arr.push(parseInt(v));
-        });
-        let d = JSON.stringify(arr);
-        app.func.getPromise('/dianli/sku/?ids=' + d + "&access_token={{access_token}}")
-            .then(([code, res]) => {
-                this.setData({prodata1: res.data});
+    loadProduct: function (proid) {
+        let arr = [parseInt(proid)];
+        this.service.postPromise('/partner/product/list', {
+            proids: arr
+        }).then(([code, res]) => {
+            this.setData({prodata1: res.data});
 
-                this.checkReserve1 = (id, index) => {
-                    let address = this.data.region[0] + this.data.region[1] + this.data.region[2];
-                    app.func.postPromise('/weixin/exchange/reverseable?access_token={{access_token}}', {
-                        goodsId: id,
-                        cusid: cusid,
-                        address: address
-                    })
-                        .then(([code, res]) => {
-                            let shiparrrun = [];
-                            shiparrrun[index] = res.data.shipable;
-                            this.setData({
-                                shipablArr: shiparrrun,
-                            });
-                            if (!res.data.shipablArr[index]) {
-                                this.setData({
-                                    shipable: false,
-                                    shipablArr: []
-                                })
-                                app.func.toastPromise('此产品不支持当前区域的配送');
-                                return false;
-                            }
-                        });
-                }
-                for (let i = 0; i < arr.length; i++) {
-                    this.checkReserve1(arr[i], i);
-                }
-                this.setData({
-                    idrunarr: arr
+            this.checkReserve1 = (id, index) => {
+                let address = this.data.region[0] + this.data.region[1] + this.data.region[2];
+                this.service.postPromise('/weixin/exchange/reverseable?access_token={{access_token}}', {
+                    goodsId: id,
+                    cusid: cusid,
+                    address: address
                 })
-                for (let i = 0; i < this.data.shipablArr.length; i++) {
-                    if (i == false) {
+                    .then(([code, res]) => {
+                        let shiparrrun = [];
+                        shiparrrun[index] = res.data.shipable;
                         this.setData({
-                            shipable: false,
-                            shipablArr: []
-                        })
-                    }
-                }
-
-            })
-    },
-    dlDetail: function (id, cusid) {
-        app.func.getPromise('/dianli/dlsku/' + id + "?access_token={{access_token}}")
-            .then(([code, res]) => {
-                this.setData({"prodata[0]": res.data});
-            })
-
-        this.checkReserve = () => {
-            let address = this.data.region[0] + this.data.region[1] + this.data.region[2];
-            app.func.postPromise('/weixin/exchange/reverseable?access_token={{access_token}}', {
-                goodsId: id,
-                cusid: cusid,
-                address: address
-            })
-                .then(([code, res]) => {
-                    this.setData({
-                        reversable: res.data.reversable,
-                        revTimes: res.data.revTimes,
-                        revTimesHour: res.data.revTimesHour,
-                        shipable: res.data.shipable
+                            shipablArr: shiparrrun,
+                        });
+                        if (!res.data.shipablArr[index]) {
+                            this.setData({
+                                shipable: false,
+                                shipablArr: []
+                            })
+                            app.func.toastPromise('此产品不支持当前区域的配送');
+                            return false;
+                        }
                     });
-                    if (!res.data.shipable) {
-                        app.func.toastPromise('此产品不支持当前区域的配送');
-                    }
-                });
-        }
-        this.checkReserve();
+            }
+            for (let i = 0; i < arr.length; i++) {
+                this.checkReserve1(arr[i], i);
+            }
+            this.setData({
+                idrunarr: arr
+            })
+            for (let i = 0; i < this.data.shipablArr.length; i++) {
+                if (i == false) {
+                    this.setData({
+                        shipable: false,
+                        shipablArr: []
+                    })
+                }
+            }
+
+        })
     },
 
     revTimeChanged: function (e) {
@@ -189,7 +158,8 @@ Page({
                         this.setData({tipsBox: true});
                     })
                     .catch((msg) => {
-                        return app.func.toastPromise(msg);
+                        console.log(msg);
+                        return this.service.toastPromise(msg);
                     });
             }
         });
@@ -198,164 +168,75 @@ Page({
     checkInfo: function (formdata) {
         var tipsBox = this.data.tipsBox;
         if (formdata.userName == '') {
-            return app.func.reject('收货人姓名不能为空');
+            return this.service.reject('收货人姓名不能为空');
         }
         //验证手机号
         if (!this.validatemobile(formdata.telNumber)) {
-            return app.func.reject('手机号码有误！');
+            return this.service.reject('手机号码有误！');
         }
         if (this.data.region[0] == '请选择') {
-            return app.func.reject('省级地址不能为空！');
+            return this.service.reject('省级地址不能为空！');
         }
         if (this.data.region[1] == '请选择') {
-            return app.func.reject('市级地址不能为空！');
+            return this.service.reject('市级地址不能为空！');
         }
         if (this.data.region[2] == '请选择') {
-            return app.func.reject('区级地址不能为空！');
+            return this.service.reject('区级地址不能为空！');
         }
         if (formdata.Address == '') {
-            return app.func.reject('详情地址不能为空！');
+            return this.service.reject('详情地址不能为空！');
         }
-        if (this.data.storeid) {
-            return this.func.resolve();
-        } else if (this.data.package_id) {
-            return this.func.resolve();
+        if (this.data.digest == '' && formdata.cardPwd == '') {
+            return this.service.reject('密码不能为空！');
+        }
+        wx.showLoading({
+            title: '提交中',
+            mask: true,
+        })
+        let that = this;
+        let revTime = 0;
+        if (this.data.revTimesHour != null) {
+            let day = this.data.revTimesHour[0][this.data.revTime1[0]].id;
+            let time = this.data.revTimesHour[1][this.data.revTime1[1]].id;
+            revTime = day + time;
         } else {
-            if (this.data.runid == 0) {
-                wx:wx.showLoading({
-                    title: '提交中',
-                    mask: true,
-
-                })
-                let that = this;
-                let revTime = 0;
-                if (this.data.revTimesHour != null) {
-                    let day = this.data.revTimesHour[0][this.data.revTime1[0]].id;
-                    let time = this.data.revTimesHour[1][this.data.revTime1[1]].id;
-                    revTime = day + time;
-                } else {
-                    if (this.data.revTimes != null) {
-                        revTime = this.data.revTimes[this.data.revTime].id;
-                    }
-                }
-                let d = JSON.stringify(this.data.idrunarr);
-                return app.func.postPromise('/weixin/gifts/orderCheckMulti?access_token={{access_token}}', {
-                    cardid: that.data.cardId,
-                    productid: that.data.pid,
-                    name: formdata.userName,
-                    province: that.data.region[0],
-                    city: that.data.region[1],
-                    county: that.data.region[2],
-                    address: formdata.Address,
-                    mobile: formdata.telNumber,
-                }).then(([code, res]) => {
-                    wx.hideLoading({
-                        success: (res) => {
-                        },
-                    })
-                    if (code == 200) {
-                        return app.func.resolve();
-                    } else {
-                        return app.func.reject(res.message);
-                    }
-                }, () => {
-                    wx.hideLoading({
-                        success: (res) => {
-                        },
-                    })
-                    return app.func.resolve();
-                });
-            } else {
-                wx:wx.showLoading({
-                    title: '提交中',
-                    mask: true,
-
-                })
-                let that = this;
-                let revTime = 0;
-                if (this.data.revTimesHour != null) {
-                    let day = this.data.revTimesHour[0][this.data.revTime1[0]].id;
-                    let time = this.data.revTimesHour[1][this.data.revTime1[1]].id;
-                    revTime = day + time;
-                } else {
-                    if (this.data.revTimes != null) {
-                        revTime = this.data.revTimes[this.data.revTime].id;
-                    }
-                }
-                return app.func.postPromise('/weixin/gifts/orderCheck?access_token={{access_token}}', {
-                    uID: wx.getStorageSync('uid'),
-                    token: wx.getStorageSync('token'),
-                    giftsId: that.data.giftsId,
-                    goodsId: that.data.goodsId,
-                    userName: formdata.userName,
-                    provinceName: that.data.region[0],
-                    cityName: that.data.region[1],
-                    countyName: that.data.region[2],
-                    detailInfo: formdata.Address,
-                    telNumber: formdata.telNumber,
-                    cusid: this.data.cusid,
-                    revTime: revTime
-                }).then(([code, res]) => {
-                    wx.hideLoading({
-                        success: (res) => {
-                        },
-                    })
-                    if (code == 200) {
-                        return app.func.resolve();
-                    } else {
-                        return app.func.reject(res.message);
-                    }
-                }, () => {
-                    return app.func.resolve();
-                });
+            if (this.data.revTimes != null) {
+                revTime = this.data.revTimes[this.data.revTime].id;
             }
-
         }
+        return this.service.postPromise('/partner/single/check', {
+            cardid: that.data.cardid,
+            goodsId: that.data.productId,
+            userName: formdata.userName,
+            provinceName: that.data.region[0],
+            cityName: that.data.region[1],
+            countyName: that.data.region[2],
+            address: formdata.Address,
+            telNumber: formdata.telNumber,
+            digest: that.data.digest,
+            password: formdata.cardPwd,
+            revTime: revTime,
+            comment: that.data.complaintContent
+        }).then(([code, res]) => {
+            wx.hideLoading({
+                success: (res) => {
+                },
+            })
+            if (code == 200) {
+                return this.service.resolve();
+            } else {
+                return this.service.reject(res.message);
+            }
+        }, () => {
+            return this.service.resolve();
+        });
     },
 
     submitInfo: function (formdata, subRes) {
-        if (this.data.storeid) {
-            //积分提交订单
-            this.storeOrder(formdata, subRes);
-        } else if (this.data.package_id) {
-            //多选卡提交订单
-            this.dlOrderPack(formdata, subRes);
-        } else {
-            //卡券提交订单
-            if (this.data.runid == 0) {
-                // 多选券
-                this.runorder(formdata, subRes);
-            } else {
-                //单选券
-                this.cardOrder(formdata, subRes);
-            }
-
-        }
+        //单选券
+        this.cardOrder(formdata, subRes);
     },
 
-    //多选卡提交订单
-    dlOrderPack: function (formdata, subRes) {
-        app.func.postPromise('/dlorderpack?access_token={{access_token}}', {
-            "giftsId": this.data.goodsId,
-            "package_id": this.data.package_id,
-            "userName": formdata.userName,
-            "provinceName": this.data.region[0],
-            "cityName": this.data.region[1],
-            "countyName": this.data.region[2],
-            "detailInfo": formdata.Address,
-            "telNumber": formdata.telNumber,
-            cusid: this.data.cusid
-        }).then(([code, res]) => {
-            if (res.success) {
-                this.ordercommentadd(this.data.goodsId, this.data.complaintContent, 3, res.presentid, subRes);
-            } else if (code == 2101) {
-                wx.setStorageSync("tab", "1");
-                wx.switchTab({url: '/pages/gifts/gifts'});
-            } else {
-                app.func.toastPromise(res.message);
-            }
-        })
-    },
     //卡券提交订单
     cardOrder: function (formdata, subRes) {
         var that = this;
@@ -389,44 +270,6 @@ Page({
             } else if (code == 2101) {
                 wx.setStorageSync("tab", "1");
                 wx.switchTab({url: '/pages/gifts/gifts'});
-            } else {
-                app.func.toastPromise(res.message);
-                return;
-            }
-        })
-    },
-
-    //积分提交订单
-    storeOrder: function (formdata, subRes) {
-        var that = this;
-        let revTime = 0;
-        if (this.data.revTimesHour != null) {
-            let day = this.data.revTimesHour[0][this.data.revTime1[0]].id;
-            let time = this.data.revTimesHour[1][this.data.revTime1[1]].id;
-            revTime = day + time;
-        } else {
-            if (this.data.revTimes != null) {
-                revTime = this.data.revTimes[this.data.revTime].id;
-            }
-        }
-
-        app.func.postPromise('/store/order?access_token={{access_token}}', {
-            uID: wx.getStorageSync('uid'),
-            token: wx.getStorageSync('token'),
-            storeid: that.data.storeid,
-            giftsId: "0000000",
-            goodsId: that.data.goodsId,
-            userName: formdata.userName,
-            provinceName: that.data.region[0],
-            cityName: that.data.region[1],
-            countyName: that.data.region[2],
-            detailInfo: formdata.Address,
-            telNumber: formdata.telNumber,
-            cusid: this.data.cusid,
-            revTime: revTime
-        }).then(([code, res]) => {
-            if (res.success) {
-                that.ordercommentadd(res.data, that.data.complaintContent, 2, res.presentid, subRes);
             } else {
                 app.func.toastPromise(res.message);
                 return;
@@ -475,7 +318,6 @@ Page({
                 }
 
             })
-
 
     },
     runorder: function (formdata, subRes) {
