@@ -187,7 +187,7 @@ Page({
                 } else {
                     let digest = res.data.digest || "";
                     let cardid = res.data.cardid;
-                    wx.navigateTo({
+                    wx.redirectTo({
                         url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&digest=${digest}`
                     });
                 }
