@@ -30,6 +30,10 @@
     
     <view class='selTitle'>请正确填写您的收货信息</view>
     <form bindsubmit="formSubmit"  bindreset="formReset">
+        <view class="section" wx:if="{{digest == ''}}">
+            <input name="cardPwd" type="password" value='{{cardPwd}}' placeholder="卡券密码"
+                   placeholder-style="color:#cccccc;"/>
+        </view>
         <view class="section">
             <input name="userName" type="text" value='{{addinfo.userName}}' placeholder="收货人姓名"
                    placeholder-style="color:#cccccc;"/>

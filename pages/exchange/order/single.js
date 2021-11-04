@@ -40,6 +40,7 @@ Page({
         this.service = new DianliService();
         this.setData({
             cardid: options.cardid,
+            productId: options.proid,
             digest: options.digest
         }, () => {
             wx.chooseAddress({
@@ -218,10 +219,6 @@ Page({
             revTime: revTime,
             comment: that.data.complaintContent
         }).then(([code, res]) => {
-            wx.hideLoading({
-                success: (res) => {
-                },
-            })
             if (code == 200) {
                 return this.service.resolve();
             } else {
@@ -229,6 +226,11 @@ Page({
             }
         }, () => {
             return this.service.resolve();
+        }).finally(() => {
+            wx.hideLoading({
+                success: (res) => {
+                },
+            })
         });
     },
 
