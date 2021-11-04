@@ -252,112 +252,29 @@ Page({
                 revTime = this.data.revTimes[this.data.revTime].id;
             }
         }
-        app.func.postPromise('/dl/order?access_token={{access_token}}', {
-            uID: wx.getStorageSync('uid'),
-            token: wx.getStorageSync('token'),
-            giftsId: that.data.giftsId,
-            goodsId: that.data.goodsId,
+        this.service.postPromise('/dl/order?access_token={{access_token}}', {
+            cardid: that.data.cardid,
+            goodsId: that.data.productId,
             userName: formdata.userName,
             provinceName: that.data.region[0],
             cityName: that.data.region[1],
             countyName: that.data.region[2],
-            detailInfo: formdata.Address,
-            telNumber: formdata.telNumber,
-            cusid: this.data.cusid,
-            revTime: revTime
-        }).then(([code, res]) => {
-            var presentid = res.presentid;
-            if (res.success) {
-                that.ordercommentadd(that.data.giftsId, that.data.complaintContent, 1, presentid, subRes)
-            } else if (code == 2101) {
-                wx.setStorageSync("tab", "1");
-                wx.switchTab({url: '/pages/gifts/gifts'});
-            } else {
-                app.func.toastPromise(res.message);
-                return;
-            }
-        })
-    },
-
-    //共用 提交备注接口
-    ordercommentadd: function (ID, comment, type, presentid, subRes, cardid) {
-
-        app.func.postPromise('/subscribe/ship/' + presentid + "?access_token={{access_token}}", subRes)
-            .then(() => {
-                if (this.data.runid == 0) {
-                    return app.func.postPromise('/weixin/Gifts/ordercommentadd?access_token={{access_token}}',
-                        {
-                            uID: wx.getStorageSync('uid'),
-                            token: wx.getStorageSync('token'),
-                            ID: ID,
-                            commentContent: comment,
-                            type: type,
-                            cusid: this.data.cusid,
-                            cardId: this.data.cardId
-                        }).then(([code, res]) => {
-                        if (res.success) {
-                            wx.redirectTo({
-                                url: '/pages/cards/order/detail?presentid=' + presentid + "&addMiniProgram=1"
-                            });
-                        }
-                    })
-                } else {
-                    return app.func.postPromise('/weixin/Gifts/ordercommentadd?access_token={{access_token}}',
-                        {
-                            uID: wx.getStorageSync('uid'),
-                            token: wx.getStorageSync('token'),
-                            ID: ID,
-                            commentContent: comment,
-                            type: type,
-                            cusid: this.data.cusid
-                        }).then(([code, res]) => {
-                        if (res.success) {
-                            wx.redirectTo({
-                                url: '/pages/cards/order/detail?presentid=' + presentid + "&addMiniProgram=1"
-                            });
-                        }
-                    })
-                }
-
-            })
-
-    },
-    runorder: function (formdata, subRes) {
-        var that = this;
-        let revTime = 0;
-        if (this.data.revTimesHour != null) {
-            let day = this.data.revTimesHour[0][this.data.revTime1[0]].id;
-            let time = this.data.revTimesHour[1][this.data.revTime1[1]].id;
-            revTime = day + time;
-        } else {
-            if (this.data.revTimes != null) {
-                revTime = this.data.revTimes[this.data.revTime].id;
-            }
-        }
-        app.func.postPromise('/dlordermulti?access_token={{access_token}}', {
-            cardid: that.data.cardId,
-            productid: that.data.pid,
-            name: formdata.userName,
-            province: that.data.region[0],
-            city: that.data.region[1],
-            county: that.data.region[2],
             address: formdata.Address,
-            mobile: formdata.telNumber,
-
+            telNumber: formdata.telNumber,
+            digest: that.data.digest,
+            password: formdata.cardPwd,
+            revTime: revTime,
+            comment: that.data.complaintContent
         }).then(([code, res]) => {
-            var presentid = res.presentid;
+            var presentid = res.data.orderid;
             if (res.success) {
-                that.ordercommentadd(that.data.giftsId, that.data.complaintContent, 3, presentid, subRes, that.data.cardId)
-            } else if (code == 2101) {
                 wx.setStorageSync("tab", "1");
                 wx.switchTab({url: '/pages/gifts/gifts'});
             } else {
-                app.func.toastPromise(res.message);
-                return;
+                this.service.toastPromise(res.message);
             }
         })
     },
-
 
     comSubmit: function () {
         wx.setStorageSync("tab", "1");
@@ -395,20 +312,6 @@ Page({
             return false;
         }
         return true;
-    },
-
-
-    // uID: wx.getStorageSync('uid'),   //用户ID
-    // token: wx.getStorageSync('token'),  //token
-    // giftsId: that.data.giftsId,       //场景礼记ID  卡号
-    // goodsId: that.data.goodsId,       //兑换的产品ID
-    // userName: formdata.userName,  //收货人姓名
-    // //postalCode: res.postalCode, //邮编
-    // provinceName: that.data.region[0],  //国标收货地址第一级地址
-    // cityName: that.data.region[1],         //国标收货地址第二级地址
-    // countyName: that.data.region[2],     //国标收货地址第三级地址
-    // detailInfo: formdata.Address,       //详细收货地址信息
-    // //nationalCode: res.nationalCode,   //收货地址国家码
-    // telNumber: formdata.telNumber      //收货人手机号码
+    }
 
 })

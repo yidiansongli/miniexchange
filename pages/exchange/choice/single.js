@@ -19,6 +19,7 @@ Page({
      */
     onLoad: function (options) {
         this.service = new DianliService();
+        wx.hideHomeButton();
         this.setData({
             cardid: options.cardid,
             digest: options.digest
