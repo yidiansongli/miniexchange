@@ -252,7 +252,7 @@ Page({
                 revTime = this.data.revTimes[this.data.revTime].id;
             }
         }
-        this.service.postPromise('/dl/order?access_token={{access_token}}', {
+        this.service.postPromise('/partner/single/order', {
             cardid: that.data.cardid,
             goodsId: that.data.productId,
             userName: formdata.userName,
