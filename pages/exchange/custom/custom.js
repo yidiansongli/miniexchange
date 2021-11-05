@@ -25,7 +25,7 @@ Page({
      */
     onLoad: function (options) {
         this.service = new DianliService();
-        if(options.cardtypeid) {
+        if (options.cardtypeid) {
             this.setData({
                 cardtypeid: options.cardtypeid
             }, () => {
@@ -66,34 +66,8 @@ Page({
         }
     },
 
-    getpageSet: function (no, userid) {
-        this.service.postPromise('/partner/card/check', {
-            cardNo: no,
-            type: 1,
-            cusid: userid,
-            cardtypeid: this.data.cardtypeid
-        }).then(([code, res]) => {
-            res.data.type != 2 ? this.checkErrorCode(res, no) : '';
-        }).catch(e => {
-            console.log(e);
-        })
-    },
-
-    checkErrorCode: function (res, no) {
-        if (res.data.errorCode == 300) {
-            wx.redirectTo({
-                url: '/pages/cards/order/detail?presentid=' + res.data.data.present_id,
-            })
-        }
-        this.setData({
-            cardid: res.data.cardid
-        }, () => {
-            this.loadLayout();
-        });
-    },
-
     loadLayout() {
-        if(this.data.cardtypeid) {
+        if (this.data.cardtypeid) {
             let cardtypeid = this.data.cardtypeid;
             var promise = this.service.getPromise(`/partner/card/layout?cardtypeid=${cardtypeid}`)
         } else {
@@ -101,15 +75,15 @@ Page({
             promise = this.service.getPromise(`/partner/card/layout?cardid=${cardid}`);
         }
         promise.then(([code, res]) => {
-                if (code == 200) {
-                    this.setData({
-                        collocate: res.data
-                    });
-                    if (res.data.cy_exchange_title != null) {
-                        wx.setNavigationBarTitle({title: res.data.cy_exchange_title});
-                    }
+            if (code == 200) {
+                this.setData({
+                    collocate: res.data
+                });
+                if (res.data.cy_exchange_title != null) {
+                    wx.setNavigationBarTitle({title: res.data.cy_exchange_title});
                 }
-            });
+            }
+        });
     },
 
     toast: function (value, icon = 'none') {
@@ -165,37 +139,53 @@ Page({
             type: 1,
             cusid: userid
         }).then(([code, res]) => {
-            code === 200 ? this.checkStatus(res, no) : this.toast(res.message);
-            this.getpageSet(no, userid);
+            if (code === 200) {
+                this.checkStatus(res, no)
+                    .then(() => {
+                        this.loadLayout();
+                    })
+            } else {
+                this.toast(res.message);
+                this.loadLayout();
+            }
         })
     },
 
     checkStatus: function (res, cardNo) {
-        let cusid = res.data.cusid;
-        if(res.data.digest != null || res.data.camilotype == 2) {
-            if (res.data.status == 2) {
-                if (res.data.type == 3) {
-                    wx.navigateTo({
-                        url: '/pages/about/exchange-unify/package?cardid=' + res.data.cardid
-                    })
+        if (res.data.status == 2) {
+            if (res.data.digest != null || res.data.camilotype == 2) {
+                switch (res.data.type) {
+                    case 3:
+                        wx.navigateTo({
+                            url: '/pages/about/exchange-unify/package?cardid=' + res.data.cardid
+                        })
+                        break;
+                    case 4:
+                        let flextype = this.data.collocate.cy_exchange_theme || 1;
+                        wx.navigateTo({
+                            url: `/pages/about/exchange-unify/multiple?id=${cardNo}&company=${res.data.company}&cusid=${this.data.qrinfo.userid}&flextype=${flextype}`
+                        })
+                        break;
+                    default:
+                        let digest = res.data.digest || "";
+                        let cardid = res.data.cardid;
+                        wx.redirectTo({
+                            url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&digest=${digest}`
+                        });
+                        break;
                 }
-                if (res.data.type == 4) {
-                    let flextype = this.data.collocate.cy_exchange_theme || 1;
-                    wx.navigateTo({
-                        url: `/pages/about/exchange-unify/multiple?id=${cardNo}&company=${res.data.company}&cusid=${this.data.qrinfo.userid}&flextype=${flextype}`
-                    })
-                } else {
-                    let digest = res.data.digest || "";
-                    let cardid = res.data.cardid;
-                    wx.redirectTo({
-                        url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&digest=${digest}`
-                    });
-                }
-            } else {
-                this.showModal(res);
+                return this.service.reject();
             }
+        } else {
+            this.showModal(res);
         }
+        return this.service.promise((resolve, reject) => {
+            this.setData({
+                cardid: res.data.cardid
+            }, resolve);
+        });
     },
+
     showModal: function (res) {
         wx.showModal({
             title: '提示',
