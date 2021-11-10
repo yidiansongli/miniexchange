@@ -85,7 +85,7 @@ Page({
         let cardid = this.data.cardid;
         let digest = this.data.digest;
         wx.navigateTo({
-            url: `/miniexchange/pages/exchange/order/single?proid=${goodsId}&cardid=${cardid}&digest=${digest}`
+            url: `/miniexchange/pages/exchange/exchange/single?proid=${goodsId}&cardid=${cardid}&digest=${digest}`
         })
     },
 
