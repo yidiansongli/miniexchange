@@ -13,7 +13,7 @@ Page({
         let no = getNo();
         let userid = getUserid();
         let pwd = getPassword();
-        let redirect = `/miniexchange/pages/exchange/custom/custom?cardNo=${no}`
+        let redirect = `/miniexchange/pages/exchange/verify/verify?cardNo=${no}`
         if (userid) {
             redirect = redirect + `&cusid=${userid}`;
         }
