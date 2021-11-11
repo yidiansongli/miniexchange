@@ -1,2 +1,138 @@
-<!--miniexchange/pages/exchange/order/single.wxml-->
-<text>miniexchange/pages/exchange/order/single.wxml</text>
+<!--pages/gifts/pages/receive-order-detail/receive-order-detail.wxml-->
+<view class='main'>
+    <view class='address' wx:if="{{present.address != null}}">
+        <view class="{{modifyable == 1 ? 'addressed' : 'addressed1'}}">
+            <view class='addressicon'>
+                <image src='/image/addressicon1.jpg'></image>
+            </view>
+            <view class='addressdetail'>
+                <view class='detail_top'>
+                    <view class='detail_top1'>{{present.address.name}}</view>
+                    <view class='detail_top2'>{{present.address.phone}}</view>
+                </view>
+                <view class='detail_bottom'>{{present.address.area}} {{present.address.address}}</view>
+            </view>
+        </view>
+        <view class="modifyaddress" bindtap="modifyAddress" data-presentid="{{presentid}}"
+              wx:if="{{modifyable == 1}}">
+            <view class="modifyaddress1">修改地址</view>
+        </view>
+    </view>
+    <view class='onerow'>
+        <view class='sendinfomation' wx:if="{{source==1 || source == 3}}">
+            <view class='geren'>
+                <view class='gerenname'>卡券兑换</view>
+            </view>
+            <view class='statushead'>{{present.statusName}}</view>
+        </view>
+        <view class='sendinfomation' wx:if="{{source==2}}">
+            <view class='geren'>
+                <view class='gerenname'>积分兑换</view>
+            </view>
+            <view class='statushead'>{{present.statusName}}</view>
+        </view>
+        <block wx:for="{{present.items}}" wx:key="">
+            <view class='tab_titlecon'>
+                <view class='tab_titleconrow' data-id="{{present.items[index].skuid}}" bindtap='exchangedetail'>
+                    <view class='tab_titlecon1'>
+                        <image src='{{item.pic}}'></image>
+                    </view>
+                    <view class='tab_titlecon2'>
+                        <view>
+                            <view class='tab_title1'>
+                                <view class='course_name'>
+                                    <view class='mingzi'>{{item.name}}</view>
+                                    <view class='shuliang'>数量:×{{item.num}}</view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class='line'></view>
+        </block>
+    </view>
+
+    <view class="subscribe">
+        <view class="subscribel">订阅发货通知</view>
+        <view class="subscriber"  bindtap="subscribe">立即订阅</view>
+    </view>
+
+    <view class='order'>
+        <view class='orderinformation'>其他信息</view>
+        <view class='ordernumber'>
+            <view class='ordernumberss'>卡号: {{present.cardno}}</view>
+            <button class="copy_btn" data-express="{{present.cardno}}" bindtap="copy">复制</button>
+        </view>
+        <view class='ordernumber'>创建时间：{{present.orderTime}}</view>
+
+
+        <view class='ordernumber' wx:if="{{hotline.company}}">发行方：{{hotline.company}}</view>
+        <view class='ordernumber' wx:if="{{hotline.hotline}}">
+            <view class='ordernumberss'>服务热线：{{hotline.hotline}}</view>
+            <button class="copy_btn" data-express="{{hotline.hotline}}" bindtap="makePhoneCall">拨打</button>
+        </view>
+
+        <!-- 卡券礼包 -->
+        <view class='customer' wx:if="{{source == 3 }}">
+            <button bindtap="jumpServer" class="customer_servicess">联系客服</button>
+            <button class="customer_servicess" bindtap="logistics">查看物流</button>
+        </view>
+        <!-- 卡券/积分卡 不能提交工单 -->
+        <view class='customer' wx:elif="{{(source == 1 || source == 2)&& !applyIssueStatus }}">
+            <button bindtap="jumpServer"
+                    class="customer_servicess">联系客服</button>
+            <button class="customer_servicess" bindtap="logistics">查看物流</button>
+        </view>
+        <!-- 卡券 未申请售后/查看售后 -->
+        <view class='customer' wx:elif="{{source == 1 && applyIssueStatus}}">
+            <!-- <button wx:if="{{present.issueStatus != 0}}" bindtap="jumpServer" class="customer_servicessa">联系客服1</button> -->
+            <button   bindtap="workorder" class="customer_servicess">联系客服</button>
+            <button class="{{present.issueStatus == 0 ? 'customer_servicess' : 'customer_servicessa'}}" bindtap="logistics">查看物流</button>
+            <button class='customer_servicessa' wx:if="{{present.issueStatus != 0}}" bindtap="workorder">查看售后</button>
+        </view>
+        <!-- 积分卡 未申请售后/查看售后 -->
+        <view class='customer' wx:elif="{{source == 2 && applyIssueStatus}}">
+            <button  wx:if="{{present.issueStatus != 0}}"   bindtap="jumpServer" class="customer_servicessa">联系客服</button>
+            <button wx:else bindtap="tipchoose" class="customer_servicess">联系客服</button>
+            <button class="{{present.issueStatus == 0 ? 'customer_servicess' : 'customer_servicessa'}}" bindtap="logistics">查看物流</button>
+            <button class='customer_servicessa' wx:if="{{present.issueStatus != 0}}" bindtap="workorder">查看售后</button>
+        </view>
+        <!-- 一点送礼商品 不能提交工单-->
+        <view class='customer' wx:elif="{{(source == 0 && present.address != null) && !applyIssueStatus}}">
+            <button bindtap="jumpServer" class="customer_servicess">联系客服</button>
+            <button class="customer_servicess" bindtap="logistics">查看物流</button>
+        </view>
+        <!-- 一点送礼商品 未申请售后/查看售后-->
+        <view class='customer' wx:elif="{{(source == 0 && present.address != null) && applyIssueStatus }}">
+            <button  wx:if="{{present.issueStatus != 0}}" bindtap="jumpServer" class="customer_servicessa">联系客服</button>
+            <button wx:else bindtap="tipchoose" class="customer_servicess">联系客服</button>
+            <button class="{{present.issueStatus == 0 ? 'customer_servicess' : 'customer_servicessa'}}" bindtap="logistics">查看物流</button>
+            <button class='customer_servicessa' wx:if="{{present.issueStatus != 0}}" bindtap="workorder">查看售后</button>
+        </view>
+
+        <view class='customer' wx:elif="{{source == 4}}">
+            <button  bindtap="jumpServer" class="customer_servicess">联系客服</button>
+            <button class="customer_servicess" bindtap="logistics">查看物流</button>
+        </view>
+
+        <!-- 其他 -->
+        <view class='customer' wx:else>
+            <button class='customer_servicez' bindtap="jumpServer">联系客服</button>
+        </view>
+    </view>
+</view>
+
+        <!--选择 人工客服/申请售后-->
+<view wx:if="{{tipchoose}}" class="twochooseone">
+    <button wx:if="{{source == 1 || source == 2}}" class='twochooseone1' bindtap="jumpServer">人工客服
+    </button>
+    <button wx:else class='twochooseone1' bindtap="jumpServer">
+        人工客服
+    </button>
+    <button class='twochooseone1' bindtap="workorder">申请售后</button>
+    <view class='showrange_cancels' bindtap='hideallrange'>×</view>
+</view>
+
+
+
