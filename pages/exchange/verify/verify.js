@@ -152,32 +152,44 @@ Page({
     },
 
     checkStatus: function (res, cardNo) {
-        if (res.data.status == 2) {
-            if (res.data.digest != null || res.data.camilotype == 2) {
+        switch (res.data.status) {
+            case 2:
+                if (res.data.digest != null || res.data.camilotype == 2) {
+                    switch (res.data.type) {
+                        case 3:
+                            wx.navigateTo({
+                                url: '/pages/about/exchange-unify/package?cardid=' + res.data.cardid
+                            })
+                            break;
+                        case 4:
+                            let flextype = this.data.collocate.cy_exchange_theme || 1;
+                            wx.navigateTo({
+                                url: `/pages/about/exchange-unify/multiple?id=${cardNo}&company=${res.data.company}&cusid=${this.data.qrinfo.userid}&flextype=${flextype}`
+                            })
+                            break;
+                        default:
+                            let digest = res.data.digest || "";
+                            let cardid = res.data.cardid;
+                            wx.redirectTo({
+                                url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&digest=${digest}`
+                            });
+                            break;
+                    }
+                    return this.service.reject();
+                }
+                break;
+            case 3:
+                let cardid = res.data.cardid;
                 switch (res.data.type) {
                     case 3:
-                        wx.navigateTo({
-                            url: '/pages/about/exchange-unify/package?cardid=' + res.data.cardid
-                        })
-                        break;
                     case 4:
-                        let flextype = this.data.collocate.cy_exchange_theme || 1;
-                        wx.navigateTo({
-                            url: `/pages/about/exchange-unify/multiple?id=${cardNo}&company=${res.data.company}&cusid=${this.data.qrinfo.userid}&flextype=${flextype}`
-                        })
-                        break;
                     default:
-                        let digest = res.data.digest || "";
-                        let cardid = res.data.cardid;
-                        wx.redirectTo({
-                            url: `/miniexchange/pages/exchange/choice/single?cardid=${cardid}&digest=${digest}`
-                        });
-                        break;
+                        wx.redirectTo({url:`/miniexchange/pages/exchange/order/single?cardid=${cardid}`})
+                        return this.service.reject();
                 }
-                return this.service.reject();
-            }
-        } else {
-            this.showModal(res);
+            default:
+                this.showModal(res);
+                break;
         }
         return this.service.promise((resolve, reject) => {
             this.setData({

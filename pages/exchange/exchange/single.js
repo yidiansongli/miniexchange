@@ -266,12 +266,10 @@ Page({
             revTime: revTime,
             comment: that.data.complaintContent
         }).then(([code, res]) => {
-            var presentid = res.data.orderid;
-            if (res.success) {
-                wx.setStorageSync("tab", "1");
-                wx.switchTab({url: '/pages/gifts/gifts'});
+            if(code == 200) {
+                wx.redirectTo({url:`/miniexchange/pages/exchange/order/single?cardid=${cardid}`})
             } else {
-                this.service.toastPromise(res.message);
+                this.service.toastPromise(res.data.message);
             }
         })
     },
