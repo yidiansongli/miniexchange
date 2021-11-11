@@ -137,7 +137,7 @@ Page({
 
     //订阅消息
     subscribe: function () {
-        app.func.wxPromisify('requestSubscribeMessage', {
+        this.service.wxPromise('requestSubscribeMessage', {
             tmplIds: ['Mu33E3EUUb3z-_jcDfYVzPSF6j1jZRrG0kqCiT7_kiA']
         }).then((res) => {
             if (res["Mu33E3EUUb3z-_jcDfYVzPSF6j1jZRrG0kqCiT7_kiA"] == 'accept') {

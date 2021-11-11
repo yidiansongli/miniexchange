@@ -19,18 +19,6 @@
         </view>
     </view>
     <view class='onerow'>
-        <view class='sendinfomation' wx:if="{{source==1 || source == 3}}">
-            <view class='geren'>
-                <view class='gerenname'>卡券兑换</view>
-            </view>
-            <view class='statushead'>{{present.statusName}}</view>
-        </view>
-        <view class='sendinfomation' wx:if="{{source==2}}">
-            <view class='geren'>
-                <view class='gerenname'>积分兑换</view>
-            </view>
-            <view class='statushead'>{{present.statusName}}</view>
-        </view>
         <block wx:for="{{present.items}}" wx:key="">
             <view class='tab_titlecon'>
                 <view class='tab_titleconrow' data-id="{{present.items[index].skuid}}" bindtap='exchangedetail'>
@@ -73,52 +61,12 @@
             <button class="copy_btn" data-express="{{hotline.hotline}}" bindtap="makePhoneCall">拨打</button>
         </view>
 
-        <!-- 卡券礼包 -->
-        <view class='customer' wx:if="{{source == 3 }}">
-            <button bindtap="jumpServer" class="customer_servicess">联系客服</button>
-            <button class="customer_servicess" bindtap="logistics">查看物流</button>
-        </view>
-        <!-- 卡券/积分卡 不能提交工单 -->
-        <view class='customer' wx:elif="{{(source == 1 || source == 2)&& !applyIssueStatus }}">
-            <button bindtap="jumpServer"
-                    class="customer_servicess">联系客服</button>
-            <button class="customer_servicess" bindtap="logistics">查看物流</button>
-        </view>
         <!-- 卡券 未申请售后/查看售后 -->
-        <view class='customer' wx:elif="{{source == 1 && applyIssueStatus}}">
+        <view class='customer'>
             <!-- <button wx:if="{{present.issueStatus != 0}}" bindtap="jumpServer" class="customer_servicessa">联系客服1</button> -->
             <button   bindtap="workorder" class="customer_servicess">联系客服</button>
             <button class="{{present.issueStatus == 0 ? 'customer_servicess' : 'customer_servicessa'}}" bindtap="logistics">查看物流</button>
             <button class='customer_servicessa' wx:if="{{present.issueStatus != 0}}" bindtap="workorder">查看售后</button>
-        </view>
-        <!-- 积分卡 未申请售后/查看售后 -->
-        <view class='customer' wx:elif="{{source == 2 && applyIssueStatus}}">
-            <button  wx:if="{{present.issueStatus != 0}}"   bindtap="jumpServer" class="customer_servicessa">联系客服</button>
-            <button wx:else bindtap="tipchoose" class="customer_servicess">联系客服</button>
-            <button class="{{present.issueStatus == 0 ? 'customer_servicess' : 'customer_servicessa'}}" bindtap="logistics">查看物流</button>
-            <button class='customer_servicessa' wx:if="{{present.issueStatus != 0}}" bindtap="workorder">查看售后</button>
-        </view>
-        <!-- 一点送礼商品 不能提交工单-->
-        <view class='customer' wx:elif="{{(source == 0 && present.address != null) && !applyIssueStatus}}">
-            <button bindtap="jumpServer" class="customer_servicess">联系客服</button>
-            <button class="customer_servicess" bindtap="logistics">查看物流</button>
-        </view>
-        <!-- 一点送礼商品 未申请售后/查看售后-->
-        <view class='customer' wx:elif="{{(source == 0 && present.address != null) && applyIssueStatus }}">
-            <button  wx:if="{{present.issueStatus != 0}}" bindtap="jumpServer" class="customer_servicessa">联系客服</button>
-            <button wx:else bindtap="tipchoose" class="customer_servicess">联系客服</button>
-            <button class="{{present.issueStatus == 0 ? 'customer_servicess' : 'customer_servicessa'}}" bindtap="logistics">查看物流</button>
-            <button class='customer_servicessa' wx:if="{{present.issueStatus != 0}}" bindtap="workorder">查看售后</button>
-        </view>
-
-        <view class='customer' wx:elif="{{source == 4}}">
-            <button  bindtap="jumpServer" class="customer_servicess">联系客服</button>
-            <button class="customer_servicess" bindtap="logistics">查看物流</button>
-        </view>
-
-        <!-- 其他 -->
-        <view class='customer' wx:else>
-            <button class='customer_servicez' bindtap="jumpServer">联系客服</button>
         </view>
     </view>
 </view>
