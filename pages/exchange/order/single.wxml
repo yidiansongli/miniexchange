@@ -1,7 +1,7 @@
 <!--pages/gifts/pages/receive-order-detail/receive-order-detail.wxml-->
 <view class='main'>
     <view class='address' wx:if="{{present.address != null}}">
-        <view class="{{modifyable == 1 ? 'addressed' : 'addressed1'}}">
+        <view class="{{present.modifyable ? 'addressed' : 'addressed1'}}">
             <view class='addressicon'>
                 <image src='/miniexchange/image/addressicon1.jpg'></image>
             </view>
@@ -14,7 +14,7 @@
             </view>
         </view>
         <view class="modifyaddress" bindtap="modifyAddress" data-presentid="{{presentid}}"
-              wx:if="{{modifyable == 1}}">
+              wx:if="{{present.modifyable}}">
             <view class="modifyaddress1">修改地址</view>
         </view>
     </view>

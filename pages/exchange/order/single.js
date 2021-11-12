@@ -7,7 +7,6 @@ Page({
     data: {
         present: null,
         cardid: '',
-        modifyable: 0,
         statusName: '',
         applyIssueStatus: false,
     },
