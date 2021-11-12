@@ -10,7 +10,6 @@ Page({
         source: '',
         dl_orderid: '',
         statusName: '',
-        tipchoose: false,    //默认不显示 客服/申请售后弹出框
         applyIssueStatus: false,
     },
 
@@ -97,15 +96,11 @@ Page({
     //卡券商品详情
     exchangedetail: function (e) {
         wx.navigateTo({
-            url: '/pages/cards/product/detail?id=' + e.currentTarget.dataset.id,
+            url: '/miniexchange/pages/product/product?id=' + e.currentTarget.dataset.id,
         })
     },
 
     onUnload: function () {
-    },
-
-    hideallrange: function () {
-        this.setData({tipchoose: false});
     },
 
     //修改地址
@@ -113,11 +108,6 @@ Page({
         wx.redirectTo({
             url: '/pages/gifts/pages/address/address?presentid=' + e.currentTarget.dataset.presentid + '&modify=1',
         });
-    },
-
-    //选择  人工客服/申请售后
-    tipchoose: function () {
-        this.setData({tipchoose: true});
     },
 
     //申请工单
