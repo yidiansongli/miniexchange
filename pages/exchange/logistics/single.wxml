@@ -1,0 +1,118 @@
+<!--pages/gifts/pages/logistics/single.wxml-->
+
+<view class='main_logistics' >
+    <view class='main_headcolor' wx:if="{{ship.shiptime == null}}">
+        <view class='main_head1'>待发货</view>
+        <view class='main_head2' wx:if="{{cardtips.length > 0}}">{{cardtips}}</view>
+        <view class='main_head2' wx:elif="{{tipsinfo.length > 0}}">{{tipsinfo}}</view>
+        <view class='main_head2' wx:else>主人，江浙沪三天内发货，其它地区五天内发货，请耐心等待</view>
+    </view>
+    <view class='main_headcolor' wx:else >
+        <view class='main_head1'>已发货</view>
+        <view class='main_head2'>主人我来了~</view>
+    </view>
+
+    <view class='address'>
+        <view class='addressicon'>
+            <image src='/miniexchange/image/addressicon1.jpg'></image>
+        </view>
+        <view class='addressdetail'>
+            <view class='detail_top'>
+                <view class='detail_top1'>{{ship.address.name}}</view>
+                <view class='detail_top2'>{{ship.address.phone}}</view>
+            </view>
+            <view class='detail_bottom'>{{ship.address.area}} {{ship.address.address}}</view>
+        </view>
+    </view>
+
+    <view hidden="{{ship.shipments[0].shipid || !hotline.company || !hotline.hotline}}"  class="compInfo">
+        <view class="compInfo1 compInfo_bom">
+            <view class="compInfo2">发行方</view>
+            <view class="compInfo3">{{hotline.company}}</view>
+        </view>
+        <view bindtap="makePhoneCall" data-express="{{hotline.hotline}}"  class="compInfo1">
+            <view class="compInfo2">服务热线</view>
+            <view class="compInfo4">
+                <view class="compInfo-tel">{{hotline.hotline}}</view>
+                <view class="compInfo-makecall">拨打</view>
+            </view>
+        </view>
+    </view>
+
+    <!--    <view wx:if="{{ship.shipments.length > 1}}">-->
+    <view>
+        <view class='shuoming'>
+            礼物已经被拆分为
+            <text>{{ship.shipments.length}}</text>
+            个包裹
+        </view>
+        <scroll-view class='nums' scroll-x="true" scroll-left="{{navScrollLeft}}" scroll-with-animation="{{true}}">
+            <block wx:for="{{ship.shipments}}" wx:key="">
+                <view class="bagnums {{current == index ? 'thisdh':''}}" bindtap='visitbags' data-index='{{index}}'>
+                    包裹{{item.index}}
+                </view>
+            </block>
+        </scroll-view>
+    </view>
+
+
+
+    <!--    <view wx:else>-->
+    <block wx:for="{{ship.shipments}}" wx:key="" >
+        <view wx:if="{{current == index}}" class='wuliuxiangqing'>
+            <view>
+                <view class="xiaotupian" >
+                    <block wx:for="{{item.items}}" wx:for-item="defineItem"  wx:key="">
+                        <image src="{{defineItem.cover}}" data-skuid="{{defineItem.skuid}}" data-shipid="{{item.shipid}}" bindtap="sku"></image>
+                    </block>
+                </view>
+            </view>
+
+
+            <view wx:if="{{item.status==1}}">
+                <view class='page_row top'>
+                    <!--<image class='goods' src='../../images/dsh.png'></image>-->
+                    <view class='logistics'>
+                        <view class='logistics_1' wx:if="{{item.company != null}}">{{item.company}}</view>
+                        <view class="express">
+                            <view class='logistics_2'>物流单号 ：{{item.express}}</view>
+                            <button class="copy_btn" data-express="{{item.express}}" bindtap="copy">复制</button>
+                        </view>
+                        <view class="logistics_2" wx:if="{{item.phone != null}}">
+                            物流电话 ：<text class="phone" data-phone="{{item.phone}}" bindtap="phone">{{item.phone}}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class='br'></view>
+            </view>
+
+
+
+            <view class="delogistics">
+                <view  class="fempty"></view>
+                <block wx:for="{{item.detail}}" wx:key="index">
+                    <view class='{{0==index?"forder":"order"}}'>
+                        <view class='{{0==index?"icon1":"icon"}}'></view>
+                        <view class='logistics_centent1'>{{item.status}}</view>
+                        <view class='logistics_centent2'>{{item.time}}</view>
+                    </view>
+                </block>
+                <view class='order' wx:if="{{ship.shiptime != null}}">
+                    <view class='icon'></view>
+                    <view class='logistics_centent1'>[已发货]包裹正在等待揽收</view>
+                    <view class='logistics_centent2'>{{ship.shiptime}}</view>
+                </view>
+                <view class="{{item.status==0 ? 'oneorder' : 'order'}}">
+                    <view class="{{item.status==0 ? 'oneicon' : 'icon'}}"></view>
+                    <view class='logistics_centent1'>[已下单]您的订单待配货</view>
+                    <view class='logistics_centent2'>{{ship.applytime}}</view>
+                    <view class="empty"></view>
+                </view>
+            </view>
+        </view>
+    </block>
+</view>
+
+
+
+

@@ -3,7 +3,7 @@
     <view class='address' wx:if="{{present.address != null}}">
         <view class="{{modifyable == 1 ? 'addressed' : 'addressed1'}}">
             <view class='addressicon'>
-                <image src='/image/addressicon1.jpg'></image>
+                <image src='/miniexchange/image/addressicon1.jpg'></image>
             </view>
             <view class='addressdetail'>
                 <view class='detail_top'>
@@ -70,17 +70,5 @@
         </view>
     </view>
 </view>
-
-        <!--选择 人工客服/申请售后-->
-<view wx:if="{{tipchoose}}" class="twochooseone">
-    <button wx:if="{{source == 1 || source == 2}}" class='twochooseone1' bindtap="jumpServer">人工客服
-    </button>
-    <button wx:else class='twochooseone1' bindtap="jumpServer">
-        人工客服
-    </button>
-    <button class='twochooseone1' bindtap="workorder">申请售后</button>
-    <view class='showrange_cancels' bindtap='hideallrange'>×</view>
-</view>
-
 
 

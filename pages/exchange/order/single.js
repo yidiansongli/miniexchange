@@ -7,8 +7,7 @@ Page({
     data: {
         present: null,
         cardid: '',
-        source: '',
-        dl_orderid: '',
+        modifyable: 0,
         statusName: '',
         applyIssueStatus: false,
     },
@@ -32,19 +31,10 @@ Page({
             .then(([code, res]) => {
                 if (code == 200) {
                     this.setData({
-                        source: res.data.source,
-                        dl_orderid: res.data.dl_orderid,
-                        statusName: res.data.statusName,
-                        modifyable: res.data.modifyable,
                         present: res.data,
                         applyIssueStatus: res.data.applyIssueStatus,
-                        presentid: options.presentid,
+                        cardid: options.cardid,
                     });
-                }
-            })
-            .then(() => {
-                if (this.data.present.modifyable == 1) {
-                    this.modifyjishi();
                 }
             });
     },
@@ -87,9 +77,9 @@ Page({
 
     //产看物流
     logistics: function () {
-        var presentid = this.data.presentid;
+        var cardid = this.data.cardid;
         wx.navigateTo({
-            url: "/pages/cards/order/logistics?presentid=" + presentid
+            url: "/miniexchange/pages/exchange/logistics/single?cardid=" + cardid
         })
     },
 

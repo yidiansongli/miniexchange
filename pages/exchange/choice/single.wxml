@@ -86,7 +86,7 @@
 
         </view>
         <view bindtap="hideModal" class="rewards_cancel">
-            <image src="/image/cancelgift.png"></image>
+            <image src="/miniexchange/image/cancelgift.png"></image>
         </view>
     </view>
     <view class="common_screen_gray" wx:if="{{tipExpired == 0}}"></view>
