@@ -19,6 +19,8 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.service = new DianliService();
+        this.promise = this.service.resolve(1);
         this.setData({cardid:options.cardid});
         this.hotline(options.cardid);
     },
@@ -39,7 +41,7 @@ Page({
         if (wx.canIUse('hideHomeButton')) {
             wx.hideHomeButton()
         }
-        app.func.getPromise('/ship/detail/' + this.data.presentid + "?access_token={{access_token}}")
+        this.service.getPromise('/ship/detail/' + this.data.presentid + "?access_token={{access_token}}")
             .then(([code,res])=>{
                 if(res.data.compensateTime > res.data.apiTime){
                     this.setData({tips:1,compensateTime:res.data.compensateTime,apiTime:res.data.apiTime},()=>this.modifyjishi());
@@ -53,27 +55,12 @@ Page({
                 }, this.tips(0,res.data.shipments));
             });
 
-
-        wx.setStorageSync("tab", "1");
-
-        app.func.getPromise('/dianli/cardExpressShow/'+ this.data.presentid +'?access_token={{access_token}}')
+        this.service.getPromise('/dianli/cardExpressShow/'+ this.data.presentid +'?access_token={{access_token}}')
             .then(([code,res])=>{
                 if(code == 200){
                     this.setData({ cardtips:res.data });
                 }
             });
-
-        // 特价礼物
-        app.func.getapi('/list/specialgift/0?length=30&access_token={{access_token}}',
-            (code, res, that) => {
-                if(code == 200){
-                    that.setData({
-                        assemble: res.data,
-                        thispNum: res.data.length,
-                        group_show:true,
-                    });
-                }
-            }, (res, that) => {}, this);
     },
 
 
@@ -118,8 +105,6 @@ Page({
                 }
             })
     },
-
-    promise: app.func.resolve(1),
 
     makePhoneCall: function (e) {
         let tel = e.currentTarget.dataset.express;
