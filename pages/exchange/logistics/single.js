@@ -41,18 +41,14 @@ Page({
         if (wx.canIUse('hideHomeButton')) {
             wx.hideHomeButton()
         }
-        this.service.getPromise('/ship/detail/' + this.data.presentid + "?access_token={{access_token}}")
+        this.service.getPromise('/partner/single/logistics?cardid=' + this.data.cardid)
             .then(([code,res])=>{
-                if(res.data.compensateTime > res.data.apiTime){
-                    this.setData({tips:1,compensateTime:res.data.compensateTime,apiTime:res.data.apiTime},()=>this.modifyjishi());
-                }else if( res.data.compensatable == 1 ){
-                    this.setData({
-                        coupon:true,
-                    },this.couponinfo(res.data.compensateKey));
-                }
+                console.log(res);
                 this.setData({
                     ship: res.data, pageshow:true
-                }, this.tips(0,res.data.shipments));
+                }, () => {
+                    this.tips(0,res.data.shipments)
+                });
             });
 
         this.service.getPromise('/dianli/cardExpressShow/'+ this.data.presentid +'?access_token={{access_token}}')
