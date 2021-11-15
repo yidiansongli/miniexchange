@@ -76,10 +76,9 @@ Page({
     },
 
     sku: function(e) {
-        let shipid = e.currentTarget.dataset.shipid;
         let skuid = e.currentTarget.dataset.skuid;
         wx.navigateTo({
-            url: 'exchangedetail?skuid=' + skuid,
+            url: '/miniexchange/pages/product/product?id=' + skuid,
         })
     },
 

@@ -63,7 +63,7 @@
             <view>
                 <view class="xiaotupian" >
                     <block wx:for="{{item.items}}" wx:for-item="defineItem"  wx:key="">
-                        <image src="{{defineItem.cover}}" data-skuid="{{defineItem.skuid}}" data-shipid="{{item.shipid}}" bindtap="sku"></image>
+                        <image src="{{defineItem.cover}}" data-skuid="{{defineItem.skuid}}" bindtap="sku"></image>
                     </block>
                 </view>
             </view>
