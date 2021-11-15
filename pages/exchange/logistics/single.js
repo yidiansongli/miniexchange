@@ -45,19 +45,12 @@ Page({
             .then(([code,res])=>{
                 console.log(res);
                 this.setData({
-                    ship: res.data, pageshow:true
+                    ship: res.data, pageshow:true, cardtips: res.data.cardtips
                 }, () => {
                     this.tips(0,res.data.shipments)
                 });
             });
-
-        this.service.getPromise('/dianli/cardExpressShow/'+ this.data.presentid +'?access_token={{access_token}}')
-            .then(([code,res])=>{
-                if(code == 200){
-                    this.setData({ cardtips:res.data });
-                }
-            });
-    },
+        },
 
 
     copy: function (e) {

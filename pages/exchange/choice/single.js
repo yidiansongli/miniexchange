@@ -38,6 +38,9 @@ Page({
                         show_company: res.data.show_company,
                         flextype: res.data.cy_exchange_theme || 1
                     });
+                    wx.setNavigationBarTitle({
+                        title: res.data.cy_exchange_title
+                    })
                 }
             });
     },
