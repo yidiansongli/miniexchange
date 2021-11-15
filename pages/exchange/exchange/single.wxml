@@ -43,6 +43,10 @@
                    placeholder-style="color:#cccccc;"/>
         </view>
         <view class="section">
+            <input name="telNumber2" type="number" value='{{addinfo.telNumber2}}' placeholder="联系电话（非必填，仅用于无法联系收货人时使用）"
+                   placeholder-style="color:#cccccc;"/>
+        </view>
+        <view class="section">
             <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
                 <view class="picker">
                     <text>当前选择：</text>

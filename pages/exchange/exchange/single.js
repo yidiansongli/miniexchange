@@ -252,6 +252,7 @@ Page({
                 revTime = this.data.revTimes[this.data.revTime].id;
             }
         }
+        let cardid= this.data.cardid;
         this.service.postPromise('/partner/single/order', {
             cardid: that.data.cardid,
             goodsId: that.data.productId,
@@ -261,6 +262,7 @@ Page({
             countyName: that.data.region[2],
             address: formdata.Address,
             telNumber: formdata.telNumber,
+            telNumber2: formdata.telNumber2,
             digest: that.data.digest,
             password: formdata.cardPwd,
             revTime: revTime,
