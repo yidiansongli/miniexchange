@@ -9,6 +9,7 @@ Page({
         cardid: '',
         statusName: '',
         applyIssueStatus: false,
+        orderids: '',
     },
 
     /**
@@ -33,6 +34,7 @@ Page({
                         present: res.data,
                         applyIssueStatus: res.data.applyIssueStatus,
                         cardid: options.cardid,
+                        orderids: res.data.orderids
                     });
                 }
             });
@@ -77,8 +79,9 @@ Page({
     //产看物流
     logistics: function () {
         var cardid = this.data.cardid;
+        var orderids = this.data.orderids;
         wx.navigateTo({
-            url: "/miniexchange/pages/exchange/logistics/single?cardid=" + cardid
+            url: `/miniexchange/pages/exchange/logistics/single?cardid=${cardid}&orderids=${orderids}`
         })
     },
 
@@ -94,8 +97,10 @@ Page({
 
     //修改地址
     modifyAddress: function (e) {
-        wx.redirectTo({
-            url: '/pages/gifts/pages/address/address?presentid=' + e.currentTarget.dataset.presentid + '&modify=1',
+        var cardid = this.data.cardid;
+        var orderids = this.data.orderids;
+        wx.navigateTo({
+            url: `/miniexchange/pages/exchange/order/address?cardid=${cardid}&orderids=${orderids}`
         });
     },
 
