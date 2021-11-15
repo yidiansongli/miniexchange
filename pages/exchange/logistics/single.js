@@ -91,9 +91,8 @@ Page({
 
     tips:function(index,shipment){
         var shipments = shipment || this.data.ship.shipments;
-        var shipid = shipments[index].shipid;
-        var skuid = shipments[index].items[0].skuid;
-        this.service.getPromise(`/ship/notice/${shipid}/${skuid}?access_token={{access_token}}`)
+        var orderid = shipments[index].orderid;
+        this.service.getPromise(`/partner/order/notice?orderid=${orderid}`)
             .then(([code,res])=>{
                 if(code == 200){
                     this.setData({tipsinfo:res.data});
