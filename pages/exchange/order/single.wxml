@@ -55,8 +55,8 @@
         <view class='ordernumber'>创建时间：{{present.orderTime}}</view>
 
 
-        <view class='ordernumber' wx:if="{{hotline.company}}">发行方：{{hotline.company}}</view>
-        <view class='ordernumber' wx:if="{{hotline.hotline}}">
+        <view class='ordernumber' wx:show="{{hotline.showCompany}}" wx:if="{{hotline.company}}">发行方：{{hotline.company}}</view>
+        <view class='ordernumber' wx:show="{{hotline.showCompany}}" wx:if="{{hotline.hotline}}">
             <view class='ordernumberss'>服务热线：{{hotline.hotline}}</view>
             <button class="copy_btn" data-express="{{hotline.hotline}}" bindtap="makePhoneCall">拨打</button>
         </view>

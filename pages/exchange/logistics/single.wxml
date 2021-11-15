@@ -25,7 +25,7 @@
         </view>
     </view>
 
-    <view hidden="{{ship.shipments[0].shipid || !hotline.company || !hotline.hotline}}"  class="compInfo">
+    <view hidden="{{ship.shipments[0].shipid || !hotline.showCompany || !hotline.company || !hotline.hotline}}"  class="compInfo">
         <view class="compInfo1 compInfo_bom">
             <view class="compInfo2">发行方</view>
             <view class="compInfo3">{{hotline.company}}</view>
@@ -39,8 +39,8 @@
         </view>
     </view>
 
-    <!--    <view wx:if="{{ship.shipments.length > 1}}">-->
-    <view>
+    <view wx:if="{{ship.shipments.length > 1}}">
+<!--    <view>-->
         <view class='shuoming'>
             礼物已经被拆分为
             <text>{{ship.shipments.length}}</text>

@@ -93,7 +93,7 @@ Page({
         var shipments = shipment || this.data.ship.shipments;
         var shipid = shipments[index].shipid;
         var skuid = shipments[index].items[0].skuid;
-        app.func.getPromise(`/ship/notice/${shipid}/${skuid}?access_token={{access_token}}`)
+        this.service.getPromise(`/ship/notice/${shipid}/${skuid}?access_token={{access_token}}`)
             .then(([code,res])=>{
                 if(code == 200){
                     this.setData({tipsinfo:res.data});
