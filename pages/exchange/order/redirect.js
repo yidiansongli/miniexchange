@@ -8,14 +8,15 @@ Page({
         service.postPromise('/partner/card/check', {
             cardid: cardid
         }).then(([code, res]) => {
-            // if (code === 200) {
-            //     this.checkStatus(res, no)
-            //         .then(() => {
-            //             this.loadLayout();
-            //         })
-            // } else {
-                this.redirectTo({url:"/pages/exchange/verify/verify"})
-            // }
+            if (code === 200) {
+                switch (res.data.type) {
+                    case 1:
+                        wx.redirectTo({url: "/miniexchange/pages/exchange/order/single?cardid=" + cardid});
+                        break;
+                }
+            } else {
+                wx.redirectTo({url: "/miniexchange/pages/exchange/exchange"})
+            }
         })
     }
 });

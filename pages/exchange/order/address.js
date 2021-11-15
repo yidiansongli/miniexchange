@@ -98,7 +98,7 @@ var page = {
             ).then(([code, res]) => {
                 if (code == 200) {
                     wx.redirectTo({
-                        url: '/miniexchange/pages/gifts/pages/order/redirect?cardid=' + this.options.cardid,
+                        url: '/miniexchange/pages/exchange/order/redirect?cardid=' + this.options.cardid,
                     });
                 } else if (code == 1620) {
                     this.setData({norange: true, showinfo: false, showcurrency: true});
