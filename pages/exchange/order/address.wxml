@@ -2,18 +2,21 @@
     <form bindsubmit="formsubmit"  report-submit="true">
         <view class='addresshead'>
             <view class='addresssrow'>
-                <input name="name" type='text' placeholder="收货人姓名" value="{{name}}"/>
+                <input name="name" type='text' placeholder="收货人姓名" value="{{address.name}}"/>
             </view>
             <view class='addresssrow'>
-                <input name="telNumber" type='number' placeholder="手机号" value="{{telNumber}}"/>
+                <input name="telNumber" type='number' placeholder="手机号" value="{{address.telNumber}}"/>
+            </view>
+            <view class='addresssrow'>
+                <input name="telNumber2" type='number' placeholder="联系电话（非必填，仅用于无法联系收货人时使用" value="{{address.telNumber2}}"/>
             </view>
             <view class="addresssrow">
-                <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-                    <view class="picker"><text>选择地区：</text>{{region[0]}}，{{region[1]}}，{{region[2]}}</view>
+                <picker mode="region" bindchange="bindRegionChange" value="{{address.region}}" custom-item="{{customItem}}">
+                    <view class="picker"><text>选择地区：</text>{{address.region[0]}}，{{address.region[1]}}，{{address.region[2]}}</view>
                 </picker>
             </view>
             <view class='addresssrow'>
-                <input name="address" type='text' placeholder="请详细填写具体收货地址" value="{{address}}"/>
+                <input name="address" type='text' placeholder="请详细填写具体收货地址" value="{{address.address}}"/>
             </view>
         </view>
         <button form-type="submit" class="apply">申请发货</button>
@@ -23,8 +26,8 @@
         <view class="info_check" wx:if="{{showinfo}}">
             <view class='info_title'>请确认收货信息</view>
             <view class='ranges'>
-                <view class="limitfont1">{{name}} {{telNumber}}</view>
-                <view class="limitfont2">{{region[0]}}{{region[1]}}{{region[2]}}{{address}}</view>
+                <view class="limitfont1">{{address.name}} {{address.telNumber}}</view>
+                <view class="limitfont2">{{address.region[0]}}{{address.region[1]}}{{address.region[2]}}{{address.address}}</view>
             </view>
             <view class='twobtn'>
                 <button class="leftbtn" bindtap='hideinfo'>取消</button>
@@ -34,18 +37,6 @@
     </form>
 
     <view class="message">{{message}}</view>
-
-    <!--弹出配送范围地址框 -->
-    <view class="one_reward_bg" wx:if="{{showallrange}}"></view>
-    <view class="showrange_commodity_attr_boxarea" wx:if="{{showallrange}}">
-        <view class='showrange_ranges_area'>配送范围</view>
-        <view class='showrange_ranges'>
-            <block wx:for="{{range}}" wx:key="">
-                <text class='showrange_diming'>{{item}}</text>
-            </block>
-        </view>
-        <view class='showrange_cancels' bindtap='hideallrange'>×</view>
-    </view>
 
     <view class="commodity_screen" bindtap="hideinfo" wx:if="{{showinfo || showcurrency || addressdetail}}"></view>
 
