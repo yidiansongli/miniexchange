@@ -38,6 +38,12 @@ Page({
                     });
                 }
             });
+        this.service.getPromise('/partner/service/subscriptions')
+            .then(([code, res]) => {
+                this.setData({
+                    subscriptions: res.data
+                });
+            });
     },
 
     hotline: function (id) {
@@ -121,13 +127,14 @@ Page({
 
     //订阅消息
     subscribe: function () {
+        let templateId = this.data.subscriptions['ORDER_SHIPED'];
         this.service.wxPromise('requestSubscribeMessage', {
-            tmplIds: ['Mu33E3EUUb3z-_jcDfYVzPSF6j1jZRrG0kqCiT7_kiA']
+            tmplIds: [templateId]
         }).then((res) => {
-            if (res["Mu33E3EUUb3z-_jcDfYVzPSF6j1jZRrG0kqCiT7_kiA"] == 'accept') {
-                app.func.toastPromise('订阅成功');
+            if (res[templateId] == 'accept') {
+                this.service.toastPromise('订阅成功');
             }
-            return app.func.postPromise('/subscribe/ship/' + this.options.presentid + "?access_token={{access_token}}", res)
+            return this.service.postPromise('/subscribe/ship/' + this.options.presentid + "?access_token={{access_token}}", res)
         }).then(([code, res]) => {
             console.log(res);
         }, (res) => {
