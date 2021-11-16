@@ -1,6 +1,5 @@
 {
   "navigationBarTitleText": "查看物流",
   "usingComponents": {
-    "buy": "/component/index/buy/cart"
   }
 }
