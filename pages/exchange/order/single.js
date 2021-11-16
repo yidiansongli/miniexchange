@@ -134,7 +134,7 @@ Page({
             if (res[templateId] == 'accept') {
                 this.service.toastPromise('订阅成功');
             }
-            return this.service.postPromise('/subscribe/ship/' + this.options.presentid + "?access_token={{access_token}}", res)
+            return this.service.postPromise('/subscribe/ship/' + this.options.presentid, res)
         }).then(([code, res]) => {
             console.log(res);
         }, (res) => {
