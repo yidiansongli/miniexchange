@@ -1,5 +1,5 @@
 /* pages/gifts/pages/address/address.wxss */
-@import "/pages/template/css/common.wxss";
+@import "/miniexchange/templates/common.wxss";
 page {
     background: #f4f4f4;
 }
