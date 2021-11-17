@@ -127,7 +127,8 @@ Page({
 
     //订阅消息
     subscribe: function () {
-        let templateId = this.data.subscriptions['ORDER_SHIPED'];
+        let templateId = this.data.subscriptions.ORDER_SHIPED;
+        console.log(templateId);
         this.service.wxPromise('requestSubscribeMessage', {
             tmplIds: [templateId]
         }).then((res) => {
