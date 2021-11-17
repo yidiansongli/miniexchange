@@ -135,7 +135,7 @@ Page({
             if (res[templateId] == 'accept') {
                 this.service.toastPromise('订阅成功');
             }
-            return this.service.postPromise('/subscribe/ship/' + this.options.presentid, res)
+            return this.service.postPromise('/partner/service/subscribe', res)
         }).then(([code, res]) => {
             console.log(res);
         }, (res) => {
