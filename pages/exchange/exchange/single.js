@@ -53,6 +53,12 @@ Page({
                 }
             })
         })
+        this.service.getPromise('/partner/service/subscriptions')
+            .then(([code, res]) => {
+                this.setData({
+                    subscriptions: res.data
+                });
+            });
     },
 
     checkData: function (options) {
@@ -133,16 +139,16 @@ Page({
 
     //订阅消息
     subscribe: function (e) {
-        // var clickNum = this.data.clickNum;
-        wx.requestSubscribeMessage({
-            tmplIds: ['Mu33E3EUUb3z-_jcDfYVzPSF6j1jZRrG0kqCiT7_kiA'],
-            success: (subRes) => {
-                this.submitInfo(this.data.newFormdata, subRes);
-            },
-            fail: () => {
-                this.submitInfo(this.data.newFormdata, null);
+        let templateId = this.data.subscriptions.ORDER_SHIPED;
+        this.service.wxPromise('requestSubscribeMessage', {
+            tmplIds: [templateId]
+        }).then((res) => {
+            if (res[templateId] == 'accept') {
+                this.service.postPromise('/partner/service/subscribe', {templateId: templateId})
             }
-        });
+        }).finally(() => {
+            this.submitInfo(this.data.newFormdata, null);
+        })
     },
 
     formSubmit: function (e) {
