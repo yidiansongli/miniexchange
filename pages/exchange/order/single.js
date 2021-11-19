@@ -155,6 +155,10 @@ Page({
         wx.navigateTo({
             url: '/pages/about/webview/webview?src=' + src
         })
+    },
+
+    serviceChat:function () {
+        wx.openCustomerServiceChat();
     }
 
 })

@@ -64,7 +64,7 @@
         <!-- 卡券 未申请售后/查看售后 -->
         <view class='customer'>
             <!-- <button wx:if="{{present.issueStatus != 0}}" bindtap="jumpServer" class="customer_servicessa">联系客服1</button> -->
-            <button   bindtap="workorder" class="customer_servicess">联系客服</button>
+            <button   bindtap="serviceChat" class="customer_servicess">联系客服</button>
             <button class="{{present.issueStatus == 0 ? 'customer_servicess' : 'customer_servicessa'}}" bindtap="logistics">查看物流</button>
             <button class='customer_servicessa' wx:if="{{present.issueStatus != 0}}" bindtap="workorder">查看售后</button>
         </view>
