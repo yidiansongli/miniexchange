@@ -1,0 +1,122 @@
+<view class="workorder">
+    <view class="choosereason" >
+        <view class="bagnums">
+            <block wx:for="{{shipments}}"  wx:key="">
+                <view class="packbag {{current == index ? 'thisdh' : ''}}"  bindtap="clickbag" data-shipid="{{item.shipid}}"  data-index="{{index}}">包裹{{item.index}}</view>
+            </block>
+        </view>
+        <block wx:for="{{shipments[current].items}}" wx:key="">
+            <view class="bagimg">
+                <image src="{{item.cover}}"></image>
+            </view>
+        </block>
+    </view>
+
+  
+  
+    <form bindsubmit="formsubmit" report-submit="true"  wx:if="{{showapply}}">
+        <view style="background: #ffffff;">
+        <view class="choosereason1">
+            <view class="choosereason_title">选择原因
+                <text>*必填</text>
+            </view>
+            <view class="choosereason_content">
+                <radio-group class="radio-group1" name="radioChange">
+                    <block wx:for="{{dictvalue}}" wx:key="">
+                        <view wx:if="{{shipments[0].shipid == null}}">
+                            <view wx:if="{{index>0}}" class="reasonone1">
+                                <radio class="radio" value="{{item.value}}"></radio>
+                                <view class="detail_reason">{{item.cy_name}}</view>
+                            </view>
+                        </view>
+                        <view wx:else class="reasonone1">
+                            <radio class="radio" value="{{item.value}}"></radio>
+                            <view class="detail_reason">{{item.cy_name}}</view>
+                        </view>
+                    </block>
+                </radio-group>
+            </view>
+        </view>
+        <view class="content">
+        <textarea class="Blessings" placeholder-style="color:#cccccc;" name="content"
+                  placeholder="请简述你的问题" maxlength="200"/>
+            <view class="words">{{currentNoteLen|0}}/{{noteMaxLen}}</view>
+        </view>
+        <view class="telphpne">
+            <view class="telphpne1">手机号</view>
+            <view class="telphpne2">
+                <input name="tel" class="search-input" placeholder="请输入手机号码"
+                       placeholder-class="placeholder-style" type="number"/>
+            </view>
+        </view>
+        <view class="container">
+            <view class="font">
+                <text class="font1">上传图片</text>
+                <text class="font2">*请保证图片清晰,最多三张</text>
+            </view>
+            <view class='img_body'>
+                <view class='img_list'>
+                    <view class='img_li' wx:for="{{imglist}}" wx:key="{{index}}">
+                        <image bindtap="imgYu" mode="widthFix" src="{{item}}" data-src="{{item}}"></image>
+                    </view>
+                    <view class='addimg' bindtap='img_w_show' wx:if="{{imglist.length < 3}}">
+                        <image src='/image/cs/addimg.png'></image>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class='btn_foot'>
+            <button class='btn_bottom' form-type="submit">提交工单申请</button>
+        </view>
+        </view>
+    </form>
+
+
+    <view  wx:if="{{showapplycontent}}"  class="content"  style="padding-top: 2rpx;">
+        <view class="{{applyContent.content.length ==1 ? 'onedelogistics' : 'delogistics'}}">
+            <view class='order'>
+                <view class='icon'>我</view>
+                <view class='logistics_centent1'>状态：<text>{{status[applyContent.status]}}</text></view>
+                <view class='logistics_centent1'>申请原因：{{dictvalue[applyContent.type].name}}</view>
+                <view class='logistics_centent1' wx:if="{{applyContent.content[0].content != null}}">问题描述：{{applyContent.content[0].content}}</view>
+                <view class="apply_img" wx:if="{{ applyContent.content[0].pic1 || applyContent.content[0].pic2 || applyContent.content[0].pic1 }}">
+                    <image wx:if="{{applyContent.content[0].pic1}}" mode="widthFix" src="{{applyContent.content[0].pic1}}" bindtap="preimg"  data-src="{{applyContent.content[0].pic1}}"></image>
+                    <image wx:if="{{applyContent.content[0].pic2}}" mode="widthFix" src="{{applyContent.content[0].pic2}}" bindtap="preimg"  data-src="{{applyContent.content[0].pic2}}"></image>
+                    <image wx:if="{{applyContent.content[0].pic3}}" mode="widthFix" src="{{applyContent.content[0].pic3}}" bindtap="preimg"  data-src="{{applyContent.content[0].pic3}}"></image>
+                </view>
+                <view class='logistics_centent2'>{{applyContent.content[0].time}}</view>
+            </view>
+            <block  wx:for="{{applyContent.content}}"  wx:key=''>
+                <view class='order' wx:if="{{index > 0}}">
+                    <view class='icon' wx:if="{{item.author == 0}}">我</view>
+                    <view class='icon1' wx:else>客</view>
+                    <view class='logistics_centent1'>{{item.content}}</view>
+                    <view class="apply_img" wx:if="{{ item.pic1 || item.pic2 || item.pic1 }}">
+                        <image wx:if="{{item.pic1}}" mode="widthFix" src="{{item.pic1}}" bindtap="preimg"  data-src="{{item.pic1}}"></image>
+                        <image wx:if="{{item.pic2}}" mode="widthFix" src="{{item.pic2}}" bindtap="preimg"  data-src="{{item.pic2}}"></image>
+                        <image wx:if="{{item.pic3}}" mode="widthFix" src="{{item.pic3}}" bindtap="preimg"  data-src="{{item.pic3}}"></image>
+                    </view>
+                    <view class='logistics_centent2'>{{item.time}}</view>
+                    <view class="empty" wx:if="{{index == applyContent.content.length - 1}}"></view>
+                </view>
+            </block>
+        </view>
+        <view class='foot' wx:if="{{applyContent.status == 1}}">
+            <view  class='foot_left' bindtap="showkeyinfo" >
+                <button class='foot_left1'>未解决</button>
+            </view>
+            <view class='foot_right' bindtap="workorder" >
+                <button class='foot_right1'>已解决</button>
+            </view>
+        </view>
+        <view class="bottom_keyboard" wx:if="{{applyContent.status == 0 || showkeyinfo}}">
+            <form bindreset="res" bindsubmit="send" report-submit="true">
+                <input class="searchs"  placeholder="" value="{{inputvalue}}" adjust-position="false"
+                       bindinput="layoutvalue"  bindconfirm="sendconfirm"
+                       confirm-hold="true" cursor-spacing="10"  focus="{{focus}}"/>
+                <button  class='sends'   form-type="submit">发送</button>
+            </form>
+        </view>
+    </view>
+
+</view>

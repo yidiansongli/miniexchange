@@ -1,0 +1,207 @@
+/* pages/gifts/pages/workorder/workorder.wxss */
+
+Page {background:#f3f5f6;}
+
+.workorder{margin-top: 20rpx;}
+
+.choosereason{position: fixed;top:0rpx;left: 0rpx;width: 750rpx;margin-left: 20rpx;background: #f3f5f6;z-index: 999;}
+.bagnums{display:flex;flex-direction: row;}
+.packbag{font-size: 32rpx;padding:20rpx 20rpx 10rpx 20rpx;margin:0 20rpx;}
+.thisdh{border-bottom: solid 4rpx #e33d3d;}
+.bagimg{display: flex;flex-direction: row;margin-top:10rpx;}
+.bagimg image{width:140rpx;height:140rpx;}
+
+
+
+.choosereason_title{font-weight:bold;font-size: 32rpx;}
+.choosereason_title text{color:#e33d3d;margin-left: 10rpx;font-size: 28rpx;}
+.choosereason_content{display:flex;flex-direction:row;font-size:28rpx;margin-top: 16rpx;}
+.radio-group{display:flex;flex-flow: row wrap; font-size:28rpx;}
+.reasonone{display:flex;flex-direction:row;margin:0 30rpx 30rpx 0;}
+
+
+
+.choosereason1{padding:20rpx 0 0 20rpx}
+.radio-group1{display:flex;flex-direction:row;font-size:28rpx;}
+.reasonone1{display:flex;flex-direction:row;margin-right: 46rpx;}
+.reasonone image{width:140rpx;height:140rpx;}
+
+.content{margin-top: 20rpx; border-top: solid 2rpx #f3f5f6;}
+.Blessings{font-size: 28rpx;padding:20rpx 20rpx 0 20rpx;width:710rpx;height:150rpx;}
+.words{font-size: 30rpx;color:#cccccc;padding:0 20rpx 0 0;display:flex;flex-direction:row;justify-content:flex-end; }
+
+.page_bd{padding: 10px;}
+.body_head{border: 1px solid;border-radius: 200rpx; padding: 10px; display:flex;flex-direction:row;justify-content:space-between;}
+
+
+.telphpne2{width:200rpx;}
+.telphpne{margin: 20rpx 20rpx 0 20rpx;padding:20rpx 0;border-top: solid 2rpx #f3f5f6;display:flex;flex-direction:row;
+    justify-content: space-between;align-items:center; font-size: 32rpx;}
+.search-input{font-size: 28rpx;}
+
+/*选择图片*/
+.container{background: #ffffff;border-top: solid 2rpx #f3f5f6;padding-top: 20rpx;margin-bottom: 150rpx;}
+.img_body{margin-top: 10rpx;}
+.img_list{width: 100vw;display: flex;display: -webkit-flex;padding: 0 20rpx;box-sizing: border-box;flex-wrap: wrap;-webkit-flex-wrap:wrap;}
+.img_list .img_li{width:200rpx;}
+.addimg{width: 200rpx;height: 250rpx;margin: 5rpx;flex-shrink: 0;-webkit-flex-shrink:0;}
+.addimg image{width: 150rpx;height: 150rpx;}
+.img_list .img_li image{width: 100%;height: 100%;}
+.container .font{margin-left: 20rpx;font-size: 32rpx;}
+.container .font1{font-weight: bold;}
+.container .font2{color:#e33d3d;margin-left: 10rpx;font-size: 28rpx;}
+
+
+
+
+
+/*客服沟通页面*/
+.apply_img{display:flex;flex-direction: row;margin-top: 20rpx;}
+.apply_img image{width:150rpx;margin-right: 20rpx;}
+
+
+
+/* 下部分 */
+.logistics_centent{width: 590rpx;position: absolute;left: 100rpx;font-size: 28rpx;color: #6d6c71;}
+.logistics_centent1{font-size: 28rpx;}
+.logistics_centent1 text{font-size: 28rpx;color:#e33d3d;}
+.logistics_centent2{font-size: 24rpx;color:#6d6c71;}
+.delogistics{
+    margin-left: 49rpx;
+    border-left: 2rpx solid #d0d0d0;
+    position:relative;
+    margin-bottom: 160rpx;
+}
+.shopimg{width:100rpx;height:100rpx;}
+.onedelogistics{margin-left: 49rpx;}
+.order{margin:30rpx 0;padding: 0 40rpx;position:relative;}
+.icon{display:flex;justify-content: center;align-items: center;color:#ffffff;font-size:32rpx;width: 50rpx;height: 50rpx;border-radius:50%;background: rgb(123,194,216);position: absolute;z-index: 6;left: -24rpx;top: 0rpx;}
+.icon1{display:flex;justify-content: center;align-items: center;color:#ffffff;font-size:32rpx;width: 50rpx;height: 50rpx;border-radius:50%;background: #6d6c71;position: absolute;z-index: 6;left: -24rpx;top: 0rpx;}
+.oneicon{width: 18rpx;height: 18rpx;border-radius:50%;background: #00a96d;position: absolute;z-index: 6;left: -10rpx;top: 10rpx;}
+.empty{height:60rpx;position:absolute;top:20rpx;left:-8rpx;width:10rpx;background:#f3f5f6;z-index:5;}
+.freeGift{position:fixed;top:34rpx;right:0rpx;width:214rpx;text-align: center;height: 60rpx;line-height: 60rpx;
+    font-size:28rpx;color:#fff;background: #fdb98c;border-top-left-radius: 200rpx;border-bottom-left-radius: 200rpx;z-index: 10;}
+
+.bottom_keyboard{
+    position:fixed;
+    bottom:0rpx;
+    left:0rpx;
+    width:100%;
+    height:100rpx;
+    background: #f7f7f7;
+    border-top:solid 1px #e8e8e8;
+    z-index: 999;
+}
+
+.bottom_keyboard image{
+    width:66rpx;
+    height:66rpx;
+}
+.searchs{
+    position:absolute;
+    left:30rpx;
+    bottom:0rpx;
+    width:70%;
+    height: 60rpx;
+    background: #fff;
+    border-radius: 8rpx;
+    border:solid 1px #f7f7f7;
+    margin-bottom: 14rpx;
+    /*margin:10rpx 0 10rpx;*/
+    padding: 6rpx 20rpx 10rpx;
+    display: flex;
+    flex-direction: row;
+}
+.cs2{
+    position:absolute;
+    right:46rpx;
+    bottom:18rpx;
+}
+.sends{
+    position:absolute;
+    right:28rpx;
+    bottom:22rpx;
+    background: #08c060;
+    border-radius: 8rpx;
+    font-size: 30rpx;
+    width:100rpx;
+    height:60rpx;
+    line-height: 60rpx;
+    color:#fff;
+    text-align:center;
+}
+.addpolder{
+    color: red;
+    font-size: 28rpx;
+    font-weight: 500;
+    padding: 0rpx 20rpx 20rpx 20rpx;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.addnull{
+    width: 100%;
+    height: 250rpx;
+}
+.addordlrs{
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    
+}
+.metaddro{
+    width: 90%;
+    height: 70%;
+    background-color: #fff;
+    margin: 13% auto;
+    position: relative;
+    padding: 20rpx;
+    box-sizing: border-box;
+    border-radius: 10rpx;
+}
+
+.template {
+    height: 90%;
+    overflow: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10rpx;
+    width: 100%;
+    background: #fff;
+}
+
+.template .wxParse-p {
+    line-height: 0;
+    padding-left: 10rpx;
+    padding-right: 10rpx;
+    font-size: 26rpx;
+}
+
+.template .wxParse-p image {
+    width: 750rpx;
+    line-height: 0;
+}
+.nullnset{
+    width: 100%;
+    height: 100rpx;
+}
+.temspbtn{
+    width: 100%;
+    height: 84rpx;
+    text-align: center;
+    line-height: 84rpx;
+    position: absolute;
+    bottom: 0rpx;
+    left: 0;
+    background-color: #e33d3d;
+    color: #fff;
+}
+.imgf1{
+    width: 38rpx;
+    margin-left: 6rpx;
+}

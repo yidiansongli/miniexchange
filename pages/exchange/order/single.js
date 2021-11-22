@@ -112,9 +112,10 @@ Page({
 
     //申请工单
     workorder: function () {
-        var presentid = this.data.presentid;
+        var orderids = this.data.orderids;
         wx.navigateTo({
-            url: '/pages/gifts/pages/workorder/workorder?presentid=' + presentid
+            // url: '/pages/gifts/pages/workorder/workorder?presentid=' + presentid
+            url:`/miniexchange/pages/exchange/orderAfer/orderAfter?presentid=${orderids}`
         })
     },
     //查看工单
